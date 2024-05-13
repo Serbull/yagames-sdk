@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -14,8 +13,6 @@ public class YandexSDK : MonoBehaviour
 
     [SerializeField] private bool _showInterstitialOnRepeat;
     [SerializeField] private float _interstialRepeatTimer = 60;
-    [Space]
-    [SerializeField] private bool _useFlags;
 
     private float _currentInterstitialRepeatTimer;
 
@@ -25,6 +22,7 @@ public class YandexSDK : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
+            Initialize();
         }
         else
         {
@@ -32,18 +30,14 @@ public class YandexSDK : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Initialize()
     {
         //LoadGame();
 
 #if !UNITY_EDITOR
-//        RestorePurchases();
+        //RestorePurchases();
         CheckCanReviewExtern();
-        if(_useFlags)
-        {
-            Debug.Log($"[YandexSDK] Request flags.");
-            LoadFlagsExtern();
-        }
+        LoadFlagsExtern();
 #endif
 
         if (_showInterstitialOnRepeat)
@@ -362,6 +356,8 @@ public class YandexSDK : MonoBehaviour
     #region Flags
 
     private static Dictionary<string, string> _flags = new();
+    public static bool IsFlagsLoaded { get; private set; }
+    public static event Action OnFlagsLoaded;
 
     [DllImport("__Internal")]
     private static extern string LoadFlagsExtern();
@@ -380,6 +376,9 @@ public class YandexSDK : MonoBehaviour
                 Debug.Log($"[YandexSDK] Change interstitial interval: {_interstialRepeatTimer}");
             }
         }
+
+        IsFlagsLoaded = true;
+        OnFlagsLoaded?.Invoke();
     }
 
     public static int GetFlag(string flag, int defalutValue)
@@ -408,6 +407,22 @@ public class YandexSDK : MonoBehaviour
     }
 
     #endregion
+
+    #region Language
+
+    [DllImport("__Internal")]
+    private static extern string GetLanguageExtern();
+
+    public static string GetLanguage(string defaultLanguage = "ru")
+    {
+#if UNITY_EDITOR
+        return defaultLanguage;
+#else
+        return GetLanguageExtern();
+#endif
+    }
+
+#endregion
 
     //#region CloudSaves
 
