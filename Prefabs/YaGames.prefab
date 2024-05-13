@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8057075115007090116}
   - component: {fileID: 6872175847771416652}
   m_Layer: 0
-  m_Name: YandexSDK
+  m_Name: YaGames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

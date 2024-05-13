@@ -21,12 +21,12 @@ namespace YandexGames
             _rateButton.onClick.AddListener(Rate_BtnClick);
 
             _callback = callback;
-            YandexSDK.OnReviewFinish += YandexSDK_OnReviewFinish;
+            YaGames.OnReviewFinish += YandexSDK_OnReviewFinish;
         }
 
         private void OnDestroy()
         {
-            YandexSDK.OnReviewFinish -= YandexSDK_OnReviewFinish;
+            YaGames.OnReviewFinish -= YandexSDK_OnReviewFinish;
         }
 
         private void Update()
@@ -57,7 +57,7 @@ namespace YandexGames
             if (!_rateClicked)
             {
                 _rateClicked = true;
-                YandexSDK.ShowReview();
+                YaGames.ShowReview();
             }
         }
 

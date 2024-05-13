@@ -5,9 +5,9 @@ using System;
 using YandexGames;
 using Newtonsoft.Json;
 
-public class YandexSDK : MonoBehaviour
+public class YaGames : MonoBehaviour
 {
-    private static YandexSDK Instance;
+    private static YaGames Instance;
 
     private static Action _rewardedAdCallback;
 
@@ -385,8 +385,7 @@ public class YandexSDK : MonoBehaviour
     {
 #if UNITY_EDITOR
         return defalutValue;
-#endif
-
+#else
         if (_flags.ContainsKey(flag))
         {
             if (int.TryParse(_flags[flag], out int result))
@@ -404,11 +403,12 @@ public class YandexSDK : MonoBehaviour
             Debug.LogWarning($"[YandexSDK] Not exist flag: {flag}");
             return defalutValue;
         }
+#endif
     }
 
-    #endregion
+#endregion
 
-    #region Language
+#region Language
 
     [DllImport("__Internal")]
     private static extern string GetLanguageExtern();
