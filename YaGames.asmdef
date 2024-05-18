@@ -1,8 +1,8 @@
 {
     "name": "YandexGames",
     "references": [
-        "Newtonsoft.Json",
-        "TMPro"
+        "com.unity.nuget.newtonsoft-json",
+        "com.unity.textmeshpro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
