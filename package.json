@@ -6,7 +6,7 @@
     "displayName": "YaGames SDK",
     "description": "YaGames SDK - plugin for WebGL games on platform 'Yandex Games'",
     "unity": "2020.3",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "keywords": [ "yagames", "yasdk", "yandex", "yandexsdk", "yandexgames" ],
     "dependencies": {
         "com.unity.nuget.newtonsoft-json": "1.0.0"

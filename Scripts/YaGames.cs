@@ -75,6 +75,8 @@ public class YaGames : MonoBehaviour
     private bool _rewardedAdHidden = true;
     private bool _interstitialAdHidden = true;
     private static InterstitialAdTimerPopup _interstitialAdTimerPopup;
+    private static float _baseTimeScale;
+    private static float _baseVolume;
 
     [DllImport("__Internal")]
     private static extern void ShowInterstitialAdExtern();
@@ -90,22 +92,36 @@ public class YaGames : MonoBehaviour
 
     public static void ShowInterstitialAd()
     {
+        CacheGameAdValues();
+
         Debug.Log($"[YandexSDK] Show interstitial Ad.");
 #if !UNITY_EDITOR
         ShowInterstitialAdExtern();
 #endif
     }
 
-    public static void ShowInterstitialAdWithTimer(int time = 3)
+    public static async void ShowInterstitialAdWithTimer(int time = 3)
     {
+        CacheGameAdValues();
+
         Time.timeScale = 0;
         var popup = Resources.Load<InterstitialAdTimerPopup>("Prefabs/InterstitialAdTimerPopup");
         _interstitialAdTimerPopup = Instantiate(popup);
         _interstitialAdTimerPopup.Initialize(ContinueGameAfterAds, time);
+
+        await System.Threading.Tasks.Task.Delay(time * 1000);
+
+#if UNITY_EDITOR
+        _interstitialAdTimerPopup.AdClosed();
+#else
+        ShowInterstitialAdExtern();
+#endif
     }
 
     public static void ShowRewardedAd(Action callback)
     {
+        CacheGameAdValues();
+
         Debug.Log($"[YandexSDK] Show rewarded Ad.");
         _rewardedAdCallback = callback;
 #if UNITY_EDITOR
@@ -134,17 +150,32 @@ public class YaGames : MonoBehaviour
     private static void ContinueGameAfterAds()
     {
         _interstitialAdTimerPopup = null;
-        Time.timeScale = 1;
+        Time.timeScale = _baseTimeScale;
+        AudioListener.volume = _baseVolume;
     }
 
-    #endregion
+    private static void CacheGameAdValues()
+    {
+        _baseTimeScale = Time.timeScale;
+        _baseVolume = AudioListener.volume;
+    }
 
-    #region AdsCallbacks
+#endregion
+
+#region AdsCallbacks
 
     public void InterstitialAdOpened()
     {
         Time.timeScale = 0;
+        AudioListener.volume = 0;
         _interstitialAdHidden = false;
+    }
+
+    public void RewardedAdOpened()
+    {
+        Time.timeScale = 0;
+        AudioListener.volume = 0;
+        _rewardedAdHidden = false;
     }
 
     public void InterstitialAdClosed()
@@ -159,12 +190,6 @@ public class YaGames : MonoBehaviour
         {
             ContinueGameAfterAds();
         }
-    }
-
-    public void RewardedAdOpened()
-    {
-        Time.timeScale = 0;
-        _rewardedAdHidden = false;
     }
 
     public void RewardedAdClosed()
@@ -183,9 +208,9 @@ public class YaGames : MonoBehaviour
 
     }
 
-    #endregion
+#endregion
 
-    #region Leaderboard
+#region Leaderboard
 
     [DllImport("__Internal")]
     private static extern void SetLeaderboardScoreExtern(string leaderboardName, int score);
@@ -198,9 +223,9 @@ public class YaGames : MonoBehaviour
 #endif
     }
 
-    #endregion
+#endregion
 
-    #region Review
+#region Review
 
     private static bool _reviewIsAvailable;
     private static bool _reviewPopupShown;
@@ -270,9 +295,9 @@ public class YaGames : MonoBehaviour
         OnReviewFinish?.Invoke(false);
         ReviewNotAvailable("already requested");
     }
-    #endregion
+#endregion
 
-    #region Purchasing
+#region Purchasing
 
     private static readonly List<string> _restoredProducts = new();
 
@@ -351,9 +376,9 @@ public class YaGames : MonoBehaviour
         OnPurchasesRestored?.Invoke();
     }
 
-    #endregion
+#endregion
 
-    #region Flags
+#region Flags
 
     private static Dictionary<string, string> _flags = new();
     public static bool IsFlagsLoaded { get; private set; }
