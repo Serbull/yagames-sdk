@@ -3,7 +3,7 @@ using UnityEngine;
 using TMPro;
 using System;
 
-namespace YandexGames
+namespace YaGamesSDK
 {
     public class InterstitialAdTimerPopup : MonoBehaviour
     {

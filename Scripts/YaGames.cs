@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using System;
-using YandexGames;
+using YaGamesSDK;
 using Newtonsoft.Json;
 
 public class YaGames : MonoBehaviour

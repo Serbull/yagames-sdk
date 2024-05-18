@@ -1,18 +1,18 @@
 {
-    "name": "com.serbull.yandexsdk",
+    "name": "com.serbull.yagames-sdk",
     "author": {
         "name": "Serbull"
     },
-    "displayName": "Yandex Games",
-    "description": "Yandex Games - plugin for WEBGL games on platform 'Yandex.Games'",
+    "displayName": "YaGames SDK",
+    "description": "YaGames SDK - plugin for WEBGL games on platform 'Yandex Games'",
     "unity": "2020.3",
     "version": "1.0.0",
-    "keywords": [ "yandex", "yandexsdk", "yandexgames" ],
+    "keywords": [ "yagames", "yasdk", "yandex", "yandexsdk", "yandexgames" ],
     "dependencies": {
         "com.unity.nuget.newtonsoft-json": "1.0.0"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Serbull/yandex-sdk.git"
+        "url": "https://github.com/Serbull/yagames-sdk.git"
     }
 }

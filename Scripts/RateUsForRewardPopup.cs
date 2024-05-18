@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace YandexGames
+namespace YaGamesSDK
 {
     public class RateUsForRewardPopup : MonoBehaviour
     {
