@@ -4,7 +4,7 @@
         "name": "Serbull"
     },
     "displayName": "YaGames SDK",
-    "description": "YaGames SDK - plugin for WEBGL games on platform 'Yandex Games'",
+    "description": "YaGames SDK - plugin for WebGL games on platform 'Yandex Games'",
     "unity": "2020.3",
     "version": "1.0.0",
     "keywords": [ "yagames", "yasdk", "yandex", "yandexsdk", "yandexgames" ],
