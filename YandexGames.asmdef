@@ -1,6 +1,9 @@
 {
     "name": "YandexGames",
-    "references": [],
+    "references": [
+        "Newtonsoft.Json",
+        "TMPro"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
