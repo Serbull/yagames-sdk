@@ -26,7 +26,7 @@
 - `YaGames.OnFlagsLoaded` событие на загрузку флагов с сервера.
 - `YaGames.GetFlag(string flag, int defaultValue);` получить флаг из Яндекс консоли, `flag` - айдишник флага, `defaultValue` - базовое значение для флага - используется в эдиторе и в случае если флаги не загрузились с сервера.
 #### Таблица лидеров:
-- `SetLeaderboadScore(string leaderboardName, int score);`
+- `SetLeaderboadScore(string leaderboardName, int score);` добавить очки в таблицу лидеров, `leaderboardName` - имя лидерборда из Яндекс консоли, `score` - очки.
 #### Оценка игры:
 - `IsReviewAvailable` возвращает возможно ли оценить игру 
 - `ShowReview();` показать окно с оценкой игры
