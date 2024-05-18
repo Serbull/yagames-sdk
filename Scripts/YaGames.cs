@@ -227,10 +227,10 @@ public class YaGames : MonoBehaviour
 
 #region Review
 
-    private static bool _reviewIsAvailable;
+    private static bool _isReviewAvailable;
     private static bool _reviewPopupShown;
 
-    public static bool ReviewIsAvailable => _reviewIsAvailable;
+    public static bool IsReviewAvailable => _isReviewAvailable;
 
     public static event Action OnReviewStateChanged;
     public static event Action<bool> OnReviewFinish;
@@ -244,7 +244,7 @@ public class YaGames : MonoBehaviour
     public static void ShowReview()
     {
         Debug.Log("[YandexSDK] Review requested.");
-        if (_reviewIsAvailable)
+        if (_isReviewAvailable)
         {
             ShowReviewExtern();
         }
@@ -252,7 +252,7 @@ public class YaGames : MonoBehaviour
 
     public static void ShowReviewForReward(Action callback)
     {
-        if (!_reviewIsAvailable) return;
+        if (!_isReviewAvailable) return;
 
         if (_reviewPopupShown) return;
 
@@ -264,9 +264,9 @@ public class YaGames : MonoBehaviour
     public void ReviewAvailable() //from lib
     {
         Debug.Log("[YandexSDK] Review is available.");
-        if (!_reviewIsAvailable)
+        if (!_isReviewAvailable)
         {
-            _reviewIsAvailable = true;
+            _isReviewAvailable = true;
             OnReviewStateChanged?.Invoke();
         }
     }
@@ -275,9 +275,9 @@ public class YaGames : MonoBehaviour
     {
         var reasonString = reason as string;
         Debug.Log("[YandexSDK] Review not available: " + reasonString);
-        if (_reviewIsAvailable)
+        if (_isReviewAvailable)
         {
-            _reviewIsAvailable = false;
+            _isReviewAvailable = false;
             OnReviewStateChanged?.Invoke();
         }
     }
