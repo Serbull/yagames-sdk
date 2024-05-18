@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using TMPro;
+//using TMPro;
 using System;
 
 namespace YandexGames
@@ -9,7 +9,7 @@ namespace YandexGames
     {
         [SerializeField] private GameObject _previewPanel;
         [SerializeField] private GameObject _finishPanel;
-        [SerializeField] private TextMeshProUGUI _timerText;
+        //[SerializeField] private TextMeshProUGUI _timerText;
 
         private bool _adClosed;
         private Action _closeAction;
@@ -34,7 +34,7 @@ namespace YandexGames
             var prefix = "Через ";
             while (time > 0)
             {
-                _timerText.text = prefix + time;
+                //_timerText.text = prefix + time;
                 yield return new WaitForSecondsRealtime(1);
                 time--;
             }
