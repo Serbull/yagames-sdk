@@ -1,10 +1,17 @@
 ### Установка:
 - С помощью UPM добавить пакет по ссылке на git `https://github.com/Serbull/yagames-sdk.git`
 
-<img width="462" alt="image" src="https://github.com/Serbull/yagames-sdk/assets/54623966/9de8ed05-904c-416e-a2c8-b6fd23636db4">
+<img width="460" alt="image" src="https://github.com/Serbull/yagames-sdk/assets/54623966/9de8ed05-904c-416e-a2c8-b6fd23636db4">
 
 ### Инициализация:
 - Добавить объект `YaGames.prefab` на загрузочную сцену.
+### Настройка:
+
+ <img width="460" alt="image" src="https://github.com/Serbull/yagames-sdk/assets/54623966/e87697b3-6184-4847-857e-7ddbd6a67653">
+ 
+- `Show Interstitial On Repeat` показывать интерстишл рекламу на повторе.
+- `Interstitial Repeat Timer` интервал показа интерстишл рекламы.
+
 ### Методы:
 #### Реклама:
 - `YaGames.ShowBannerAd();` показать баннер.
