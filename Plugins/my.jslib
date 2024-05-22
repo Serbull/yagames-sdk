@@ -5,11 +5,11 @@ mergeInto(LibraryManager.library, {
             callbacks: {
                 onOpen: () => {
                     console.log('Interstitial ad open.');
-                    myGameInstance.SendMessage('YandexSDK', 'InterstitialAdOpened');
+                    myGameInstance.SendMessage('YaGames', 'InterstitialAdOpened');
                 },
                 onClose: function(wasShown) {
 		    console.log('Interstitial ad shown.');
-                    myGameInstance.SendMessage('YandexSDK', 'InterstitialAdClosed');
+                    myGameInstance.SendMessage('YaGames', 'InterstitialAdClosed');
                 },
                 onError: function(error) {
                     console.log('Error while open interstitial ad:', error);
@@ -23,19 +23,19 @@ mergeInto(LibraryManager.library, {
             callbacks: {
                 onOpen: () => {
                     console.log('Video ad open.');
-                    myGameInstance.SendMessage('YandexSDK', 'RewardedAdOpened');
+                    myGameInstance.SendMessage('YaGames', 'RewardedAdOpened');
                 },
                 onRewarded: () => {
                     console.log('Rewarded!');
-                    myGameInstance.SendMessage('YandexSDK', 'RewardedAdGranded');
+                    myGameInstance.SendMessage('YaGames', 'RewardedAdGranded');
                 },
                 onClose: () => {
                     console.log('Video ad closed.');
-                    myGameInstance.SendMessage('YandexSDK', 'RewardedAdClosed');
+                    myGameInstance.SendMessage('YaGames', 'RewardedAdClosed');
                 }, 
                 onError: (e) => {
                     console.log('Error while open video ad:', e);
-                    myGameInstance.SendMessage('YandexSDK', 'RewardedAdNotReady');
+                    myGameInstance.SendMessage('YaGames', 'RewardedAdNotReady');
                 }
             }
         })
@@ -78,10 +78,10 @@ mergeInto(LibraryManager.library, {
         .then(({ value, reason }) => {
             if (value) {
                 console.log('Review is available');
-                myGameInstance.SendMessage('YandexSDK', 'ReviewAvailable');
+                myGameInstance.SendMessage('YaGames', 'ReviewAvailable');
             } else {
                 console.log('Review not available: ', reason);
-                myGameInstance.SendMessage('YandexSDK', 'ReviewNotAvailable', reason);
+                myGameInstance.SendMessage('YaGames', 'ReviewNotAvailable', reason);
             }
         })
     },
@@ -93,12 +93,12 @@ mergeInto(LibraryManager.library, {
                 ysdk.feedback.requestReview()
                     .then(({ feedbackSent }) => {
                         console.log(feedbackSent);
-                        if(feedbackSent) myGameInstance.SendMessage('YandexSDK', 'ReviewFinishSuccessful');
-                        else myGameInstance.SendMessage('YandexSDK', 'ReviewFinishCancel');
+                        if(feedbackSent) myGameInstance.SendMessage('YaGames', 'ReviewFinishSuccessful');
+                        else myGameInstance.SendMessage('YaGames', 'ReviewFinishCancel');
                     })
             } else {
                 console.log('Review cancelled: ', reason);
-                myGameInstance.SendMessage('YandexSDK', 'ReviewFinishCancel');
+                myGameInstance.SendMessage('YaGames', 'ReviewFinishCancel');
             }
         })
     },
@@ -109,13 +109,13 @@ mergeInto(LibraryManager.library, {
         .then(purchases => {
             purchases.forEach((purchase) => {
                 console.log('Restore: ', purchase.productID);
-                myGameInstance.SendMessage('YandexSDK', 'PurchaseRestored', purchase.productID);
+                myGameInstance.SendMessage('YaGames', 'PurchaseRestored', purchase.productID);
             });
             console.log('Purchases restored successful');
-            myGameInstance.SendMessage('YandexSDK', 'PurchasesRestored');
+            myGameInstance.SendMessage('YaGames', 'PurchasesRestored');
         }).catch(err => {
             console.log('Purchases restored: ', err);
-            myGameInstance.SendMessage('YandexSDK', 'PurchasesRestored');
+            myGameInstance.SendMessage('YaGames', 'PurchasesRestored');
             // Выбрасывает исключение USER_NOT_AUTHORIZED для неавторизованных пользователей.
         })
     },
@@ -130,11 +130,11 @@ mergeInto(LibraryManager.library, {
         payments.purchase({ id: productIdString })
         .then(purchase => {
             console.log('Purchase successful: ', productIdString);
-            myGameInstance.SendMessage('YandexSDK', 'PurchaseSuccessful', productIdString);
+            myGameInstance.SendMessage('YaGames', 'PurchaseSuccessful', productIdString);
             // Покупка успешно совершена!
         }).catch(err => {
             console.log('Purchase failed: ', productIdString);
-            myGameInstance.SendMessage('YandexSDK', 'PurchaseFailed', productIdString);
+            myGameInstance.SendMessage('YaGames', 'PurchaseFailed', productIdString);
             // Покупка не удалась: в консоли разработчика не добавлен товар с таким id,
             // пользователь не авторизовался, передумал и закрыл окно оплаты,
             // истекло отведенное на покупку время, не хватило денег и т. д.
@@ -167,13 +167,13 @@ mergeInto(LibraryManager.library, {
     LoadGameExtern: function () {
         if(player == null) {
             console.log("Player is null: return null save data");
-            myGameInstance.SendMessage('YandexSDK', 'UserDataLoaded', null);
+            myGameInstance.SendMessage('YaGames', 'UserDataLoaded', null);
             return;
         }
         player.getData().then(_data => {
             const myJSON = JSON.stringify(_data);
             console.log('Player data: ', myJSON);
-            myGameInstance.SendMessage('YandexSDK', 'UserDataLoaded', myJSON);
+            myGameInstance.SendMessage('YaGames', 'UserDataLoaded', myJSON);
         });
     },
 
@@ -182,7 +182,7 @@ mergeInto(LibraryManager.library, {
         ysdk.getFlags().then(flags => {
             const myJson = JSON.stringify(flags);
             console.log('[MyJslib] Flags loaded:', myJson);
-            myGameInstance.SendMessage('YandexSDK', 'FlagsLoaded', myJson);
+            myGameInstance.SendMessage('YaGames', 'FlagsLoaded', myJson);
         });
     },
 });
