@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace YaGamesSDK
 {
@@ -8,17 +9,21 @@ namespace YaGamesSDK
         [SerializeField] private GameObject _mainPanel;
         [SerializeField] private GameObject _errorPanel;
         [SerializeField] private Button _rateButton;
+        [SerializeField] private TextMeshProUGUI _currencyText;
+        [SerializeField] private Image _currencyImage;
 
         private bool _rateClicked;
 
         private System.Action _callback;
         private bool _grandReward;
 
-        public void Initialize(System.Action callback)
+        public void Initialize(System.Action callback, int currencyCount, Sprite currencyIcon)
         {
             _mainPanel.SetActive(true);
             _errorPanel.SetActive(false);
             _rateButton.onClick.AddListener(Rate_BtnClick);
+            _currencyText.text = currencyCount.ToString();
+            _currencyImage.sprite = currencyIcon;
 
             _callback = callback;
             YaGames.OnReviewFinish += YandexSDK_OnReviewFinish;

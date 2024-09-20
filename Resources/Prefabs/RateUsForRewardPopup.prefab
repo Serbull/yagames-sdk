@@ -1026,6 +1026,8 @@ MonoBehaviour:
   _mainPanel: {fileID: 4107127502317555851}
   _errorPanel: {fileID: 562260442693510141}
   _rateButton: {fileID: 2782638237634196516}
+  _currencyText: {fileID: 252284618809499576}
+  _currencyImage: {fileID: 2085132399533573576}
 --- !u!1 &7991936769925246407
 GameObject:
   m_ObjectHideFlags: 0

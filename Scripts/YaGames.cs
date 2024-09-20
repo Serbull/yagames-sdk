@@ -256,7 +256,7 @@ public class YaGames : MonoBehaviour
         }
     }
 
-    public static void ShowReviewForReward(Action callback)
+    public static void ShowReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
     {
         if (!_isReviewAvailable) return;
 
@@ -264,7 +264,7 @@ public class YaGames : MonoBehaviour
 
         _reviewPopupShown = true;
         var popup = Instantiate(Resources.Load<RateUsForRewardPopup>("Prefabs/RateUsForRewardPopup"));
-        popup.Initialize(callback);
+        popup.Initialize(callback, currencyCount, currencyIcon);
     }
 
     public void ReviewAvailable() //from lib
