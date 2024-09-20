@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using YaGamesSDK;
 using Newtonsoft.Json;
+using System.Collections;
 
 public class YaGames : MonoBehaviour
 {
@@ -100,7 +101,7 @@ public class YaGames : MonoBehaviour
 #endif
     }
 
-    public static async void ShowInterstitialAdWithTimer(int time = 3)
+    public static void ShowInterstitialAdWithTimer(int time = 3)
     {
         CacheGameAdValues();
 
@@ -109,7 +110,12 @@ public class YaGames : MonoBehaviour
         _interstitialAdTimerPopup = Instantiate(popup);
         _interstitialAdTimerPopup.Initialize(ContinueGameAfterAds, time);
 
-        await System.Threading.Tasks.Task.Delay(time * 1000);
+        Instance.StartCoroutine(InterstitialAdTimer(time));
+    }
+
+    private static IEnumerator InterstitialAdTimer(int time)
+    {
+        yield return new WaitForSecondsRealtime(time);
 
 #if UNITY_EDITOR
         _interstitialAdTimerPopup.AdClosed();
