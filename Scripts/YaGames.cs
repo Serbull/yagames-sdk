@@ -101,7 +101,7 @@ public class YaGames : MonoBehaviour
 #endif
     }
 
-    public static void ShowInterstitialAdWithTimer(int time = 3)
+    public static void ShowInterstitialAdWithTimer(int time = 2)
     {
         CacheGameAdValues();
 
