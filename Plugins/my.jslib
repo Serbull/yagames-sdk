@@ -1,7 +1,8 @@
 mergeInto(LibraryManager.library, {
 
     SendGameReadyExtern: function () {
-        ysdk.features.LoadingAPI?.ready();
+        console.log('[YaGamesLib] Game Ready');
+        ysdk.features.LoadingAPI.ready();
     },
 
     ShowInterstitialAdExtern: function ()    {
