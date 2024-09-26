@@ -12,6 +12,8 @@ public class YaGames : MonoBehaviour
 
     private static Action _rewardedAdCallback;
 
+    [SerializeField] private bool _sendGameReadyOnStart = true;
+    [Space]
     [SerializeField] private bool _showInterstitialOnRepeat;
     [SerializeField] private float _interstialRepeatTimer = 60;
 
@@ -33,6 +35,10 @@ public class YaGames : MonoBehaviour
 
     private void Initialize()
     {
+        if (_sendGameReadyOnStart)
+        {
+            SendGameReady();
+        }
         //LoadGame();
 
 #if !UNITY_EDITOR
@@ -69,6 +75,24 @@ public class YaGames : MonoBehaviour
             }
         }
     }
+
+    #region GameReady
+
+    private static bool _isGameReadySent;
+
+    [DllImport("__Internal")]
+    private static extern void SendGameReadyExtern();
+
+    public static void SendGameReady()
+    {
+        if (_isGameReadySent)
+            return;
+
+        Debug.Log("[YaGamesSDK] Send GameReady");
+        _isGameReadySent = true;
+        SendGameReadyExtern();
+    }
+    #endregion
 
     #region Ads
 
