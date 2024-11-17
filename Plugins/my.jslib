@@ -78,7 +78,7 @@ mergeInto(LibraryManager.library, {
             .then(res => {
                 console.log(res);
                 res.entries = res.entries.map(entry => {
-                    const avatarUrl = entry.player.getAvatarSrc('128');
+                    const avatarUrl = entry.player.getAvatarSrc('small');
                     return {
                         ...entry,
                         avatarUrl
