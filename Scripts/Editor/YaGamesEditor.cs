@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEditor;
 
@@ -26,3 +27,4 @@ public class YaGamesEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+#endif
