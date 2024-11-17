@@ -35,13 +35,13 @@ public class YaGames : MonoBehaviour
 
     private void Initialize()
     {
+#if !UNITY_EDITOR
         if (_sendGameReadyOnStart)
         {
             SendGameReady();
         }
         //LoadGame();
 
-#if !UNITY_EDITOR
         //RestorePurchases();
         CheckCanReviewExtern();
         LoadFlagsExtern();
