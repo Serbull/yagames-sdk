@@ -77,7 +77,9 @@ mergeInto(LibraryManager.library, {
             lb.getLeaderboardEntries(nameString, { quantityTop: quantityTop, includeUser: includeUser, quantityAround: quantityAround })
             .then(res => {
                 console.log(res);
-                myGameInstance.SendMessage('YaGames', 'LeaderboardLoaded', res);
+                const myJson = JSON.stringify(flags);
+                console.log('[MyJslib] Leaderboard loaded:', myJson);
+                myGameInstance.SendMessage('YaGames', 'LeaderboardLoaded', myJson);
             });
         });
     },
