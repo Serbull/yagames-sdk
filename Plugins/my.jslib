@@ -70,6 +70,18 @@ mergeInto(LibraryManager.library, {
         })
     },
 
+    GetLeaderboardExtern: function (name, includeUser, quantityAround, quantityTop) {
+        var nameString = UTF8ToString(name);
+        ysdk.getLeaderboards()
+        .then(lb => {
+            lb.getLeaderboardEntries(nameString, { quantityTop: quantityTop, includeUser: includeUser, quantityAround: quantityAround })
+            .then(res => {
+                console.log(res);
+                myGameInstance.SendMessage('YaGames', 'LeaderboardLoaded', res);
+            });
+        });
+    },
+
     GetLanguageExtern: function () {
         var lang = ysdk.environment.i18n.lang;
         var bufferSize = lengthBytesUTF8(lang) + 1;

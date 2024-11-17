@@ -238,19 +238,32 @@ public class YaGames : MonoBehaviour
 
     }
 
-#endregion
+    #endregion
 
-#region Leaderboard
+    #region Leaderboard
+
+    private static string _leaderboardData;
+
+    public static bool IsLeaderboardLoaded => _leaderboardData != null;
+    public static string LeaderboardData => _leaderboardData;
 
     [DllImport("__Internal")]
     private static extern void SetLeaderboardScoreExtern(string leaderboardName, int score);
 
-    public static void SetLeaderboadScore(string leaderboardName, int score)
+    [DllImport("__Internal")]
+    private static extern void LoadLeaderboardExtern(string leaderboardName, bool includeUser, int quantityAround, int quantityTop);
+
+    public static void LoadLeaderboard(string leaderboardName, bool includeUser = true, int quantityAround = 10, int quantityTop = 10)
     {
-        Debug.Log($"[YandexSDK] Set Leaderboard: '{leaderboardName}' score: {score}");
 #if !UNITY_EDITOR
-        SetLeaderboardScoreExtern(leaderboardName, score);
+        LoadLeaderboardExtern(leaderboardName, includeUser, quantityAround, quantityTop);
 #endif
+    }
+
+    public void LeaderboardLoaded(string data)
+    {
+        Debug.Log($"[YandexSDK] Leaderboard loaded: {data}");
+        _leaderboardData = data;
     }
 
 #endregion
