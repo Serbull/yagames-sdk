@@ -283,6 +283,9 @@ public class YaGames : MonoBehaviour
     /// <summary>
     /// Show review popup once per game.
     /// </summary>
+    /// <param name="callback"></param>
+    /// <param name="currencyCount"></param>
+    /// <param name="currencyIcon"></param>
     public static void OfferReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
     {
         if (!_isReviewAvailable) return;
@@ -296,6 +299,9 @@ public class YaGames : MonoBehaviour
     /// <summary>
     /// Show review popup multiple per game.
     /// </summary>
+    /// <param name="callback"></param>
+    /// <param name="currencyCount"></param>
+    /// <param name="currencyIcon"></param>
     public static void PreviewReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
     {
         if (!_isReviewAvailable) return;
