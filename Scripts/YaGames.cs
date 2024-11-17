@@ -269,6 +269,7 @@ public class YaGames : MonoBehaviour
 #endif
     }
 
+    //not work
     public void LeaderboardLoaded(string data)
     {
         Debug.Log($"[YandexSDK] Leaderboard loaded: {data}");
