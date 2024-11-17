@@ -70,7 +70,7 @@ mergeInto(LibraryManager.library, {
         })
     },
 
-    GetLeaderboardExtern: function (name, includeUser, quantityAround, quantityTop) {
+    LoadLeaderboardExtern: function (name, includeUser, quantityAround, quantityTop) {
         var nameString = UTF8ToString(name);
         ysdk.getLeaderboards()
         .then(lb => {

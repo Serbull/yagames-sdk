@@ -263,6 +263,7 @@ public class YaGames : MonoBehaviour
 
     public static void LoadLeaderboard(string leaderboardName, bool includeUser = true, int quantityAround = 10, int quantityTop = 10)
     {
+        Debug.Log($"[YandexSDK] Load Leaderboard: '{leaderboardName}'");
 #if !UNITY_EDITOR
         LoadLeaderboardExtern(leaderboardName, includeUser, quantityAround, quantityTop);
 #endif
