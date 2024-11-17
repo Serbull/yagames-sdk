@@ -258,7 +258,7 @@ public class YaGames : MonoBehaviour
 #region Review
 
     private static bool _isReviewAvailable;
-    private static bool _reviewPopupShown;
+    private static bool _reviewPopupOffered;
 
     public static bool IsReviewAvailable => _isReviewAvailable;
 
@@ -280,13 +280,26 @@ public class YaGames : MonoBehaviour
         }
     }
 
-    public static void ShowReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
+    /// <summary>
+    /// Show review popup once per game.
+    /// </summary>
+    public static void OfferReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
     {
         if (!_isReviewAvailable) return;
 
-        if (_reviewPopupShown) return;
+        if (_reviewPopupOffered) return;
 
-        _reviewPopupShown = true;
+        _reviewPopupOffered = true;
+        PreviewReviewForReward(callback, currencyCount, currencyIcon);
+    }
+
+    /// <summary>
+    /// Show review popup multiple per game.
+    /// </summary>
+    public static void PreviewReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
+    {
+        if (!_isReviewAvailable) return;
+
         var popup = Instantiate(Resources.Load<RateUsForRewardPopup>("Prefabs/RateUsForRewardPopup"));
         popup.Initialize(callback, currencyCount, currencyIcon);
     }
