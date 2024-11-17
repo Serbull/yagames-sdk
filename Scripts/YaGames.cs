@@ -258,7 +258,6 @@ public class YaGames : MonoBehaviour
 #region Review
 
     private static bool _isReviewAvailable;
-    private static bool _reviewPopupOffered;
 
     public static bool IsReviewAvailable => _isReviewAvailable;
 
@@ -280,29 +279,7 @@ public class YaGames : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Show review popup once per game.
-    /// </summary>
-    /// <param name="callback"></param>
-    /// <param name="currencyCount"></param>
-    /// <param name="currencyIcon"></param>
-    public static void OfferReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
-    {
-        if (!_isReviewAvailable) return;
-
-        if (_reviewPopupOffered) return;
-
-        _reviewPopupOffered = true;
-        PreviewReviewForReward(callback, currencyCount, currencyIcon);
-    }
-
-    /// <summary>
-    /// Show review popup multiple per game.
-    /// </summary>
-    /// <param name="callback"></param>
-    /// <param name="currencyCount"></param>
-    /// <param name="currencyIcon"></param>
-    public static void PreviewReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
+    public static void OpenReviewForReward(Action callback, int currencyCount, Sprite currencyIcon)
     {
         if (!_isReviewAvailable) return;
 
