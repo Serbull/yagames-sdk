@@ -181,12 +181,14 @@ public class YaGames : MonoBehaviour
     {
         _interstitialAdTimerPopup = null;
         Time.timeScale = _baseTimeScale;
+        AudioListener.volume = _baseVolume;
         AudioListener.pause = false;
     }
 
     private static void CacheGameAdValues()
     {
         _baseTimeScale = Time.timeScale;
+        _baseVolume = AudioListener.volume;
     }
 
 #endregion
@@ -196,6 +198,7 @@ public class YaGames : MonoBehaviour
     public void InterstitialAdOpened()
     {
         Time.timeScale = 0;
+        AudioListener.volume = 0;
         AudioListener.pause = true;
         _interstitialAdHidden = false;
     }
@@ -203,6 +206,7 @@ public class YaGames : MonoBehaviour
     public void RewardedAdOpened()
     {
         Time.timeScale = 0;
+        AudioListener.volume = 0;
         AudioListener.pause = true;
         _rewardedAdHidden = false;
     }
