@@ -9,15 +9,15 @@ mergeInto(LibraryManager.library, {
         ysdk.adv.showFullscreenAdv({
             callbacks: {
                 onOpen: () => {
-                    console.log('Interstitial ad open.');
+                    console.log('[YaGamesLib] Interstitial ad open.');
                     myGameInstance.SendMessage('YaGames', 'InterstitialAdOpened');
                 },
                 onClose: function(wasShown) {
-		    console.log('Interstitial ad shown.');
+		            console.log('[YaGamesLib] Interstitial ad shown.');
                     myGameInstance.SendMessage('YaGames', 'InterstitialAdClosed');
                 },
                 onError: function(error) {
-                    console.log('Error while open interstitial ad:', error);
+                    console.log('[YaGamesLib] Error while open interstitial ad:', error);
                 }
             }
         })
@@ -27,19 +27,19 @@ mergeInto(LibraryManager.library, {
         ysdk.adv.showRewardedVideo({
             callbacks: {
                 onOpen: () => {
-                    console.log('Video ad open.');
+                    console.log('[YaGamesLib] Video ad open.');
                     myGameInstance.SendMessage('YaGames', 'RewardedAdOpened');
                 },
                 onRewarded: () => {
-                    console.log('Rewarded!');
+                    console.log('[YaGamesLib] Rewarded!');
                     myGameInstance.SendMessage('YaGames', 'RewardedAdGranded');
                 },
                 onClose: () => {
-                    console.log('Video ad closed.');
+                    console.log('[YaGamesLib] Video ad closed.');
                     myGameInstance.SendMessage('YaGames', 'RewardedAdClosed');
                 }, 
                 onError: (e) => {
-                    console.log('Error while open video ad:', e);
+                    console.log('[YaGamesLib] Error while open video ad:', e);
                     myGameInstance.SendMessage('YaGames', 'RewardedAdNotReady');
                 }
             }
