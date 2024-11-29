@@ -197,24 +197,18 @@ public class YaGames : MonoBehaviour
 
     public void InterstitialAdOpened()
     {
-        MainThreadDispatcher.Instance.Enqueue(() =>
-        {
-            Time.timeScale = 0;
-            AudioListener.volume = 0;
-            AudioListener.pause = true;
-            _interstitialAdHidden = false;
-        });
+        Time.timeScale = 0;
+        AudioListener.volume = 0;
+        AudioListener.pause = true;
+        _interstitialAdHidden = false;
     }
 
     public void RewardedAdOpened()
     {
-        MainThreadDispatcher.Instance.Enqueue(() =>
-        {
-            Time.timeScale = 0;
-            AudioListener.volume = 0;
-            AudioListener.pause = true;
-            _rewardedAdHidden = false;
-        });
+        Time.timeScale = 0;
+        AudioListener.volume = 0;
+        AudioListener.pause = true;
+        _rewardedAdHidden = false;
     }
 
     public void InterstitialAdClosed()
