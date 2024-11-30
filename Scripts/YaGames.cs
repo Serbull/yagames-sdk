@@ -25,7 +25,6 @@ public class YaGames : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
-            Initialize();
         }
         else
         {
@@ -33,7 +32,7 @@ public class YaGames : MonoBehaviour
         }
     }
 
-    private void Initialize()
+    private void Start()
     {
 #if !UNITY_EDITOR
         if (_sendGameReadyOnStart)
