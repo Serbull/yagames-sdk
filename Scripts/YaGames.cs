@@ -517,8 +517,7 @@ public class YaGames : MonoBehaviour
 #else
             if (_deviceType == null)
             {
-                var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(GetDeviceInfoExtern());
-                _deviceType = json["_type"];
+                _deviceType = GetDeviceInfoExtern();
                 _isDeviceTouchable = _deviceType == "mobile" || _deviceType == "tablet";
             }
 

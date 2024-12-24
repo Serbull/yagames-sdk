@@ -95,7 +95,8 @@ mergeInto(LibraryManager.library, {
     GetDeviceInfoExtern: function () {
         const myJson = JSON.stringify(ysdk.deviceInfo);
         console.log('[YaGamesLib] Device info:', myJson);
-        return myJson;
+        console.log('[YaGamesLib] Device type:', myJson._type);
+        return myJson._type;
     },
 
     CheckCanReviewExtern: function () {
@@ -203,7 +204,7 @@ mergeInto(LibraryManager.library, {
     },
 
     LoadFlagsExtern: function () {
-        console.log('[MyJslib] Request flags');
+        console.log('[YaGamesLib] Request flags');
         ysdk.getFlags().then(flags => {
             const myJson = JSON.stringify(flags);
             console.log('[YaGamesLib] Flags loaded:', myJson);
