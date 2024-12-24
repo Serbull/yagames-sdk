@@ -93,10 +93,7 @@ mergeInto(LibraryManager.library, {
     },
 
     GetDeviceInfoExtern: function () {
-        const myJson = JSON.stringify(ysdk.deviceInfo);
-        console.log('[YaGamesLib] Device info:', myJson);
         console.log('[YaGamesLib] Device type:', ysdk.deviceInfo.type);
-
         var data = ysdk.deviceInfo.type;
         var bufferSize = lengthBytesUTF8(data) + 1;
         var buffer = _malloc(bufferSize);
