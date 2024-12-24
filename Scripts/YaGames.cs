@@ -502,27 +502,29 @@ public class YaGames : MonoBehaviour
 
     #region DeviceInfo
 
-    private static bool _isDeviceDefined;
+    private static string _deviceType;
     private static bool _isDeviceTouchable;
 
     [DllImport("__Internal")]
     private static extern string GetDeviceInfoExtern();
 
-    public static bool IsDeviceTouchable()
+    public static bool IsDeviceTouchable
     {
-#if UNITY_EDITOR
-        return false;
-#else
-        if (!_isDeviceDefined)
+        get
         {
-            var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(GetDeviceInfoExtern());
-            var device = json["type"];
-            _isDeviceTouchable = device == "mobile" || device == "tablet";
-            _isDeviceDefined = true;
-        }
+#if UNITY_EDITOR
+            return false;
+#else
+            if (_deviceType == null)
+            {
+                var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(GetDeviceInfoExtern());
+                _deviceType = json["_type"];
+                _isDeviceTouchable = _deviceType == "mobile" || _deviceType == "tablet";
+            }
 
-        return _isDeviceTouchable;
+            return _isDeviceTouchable;
 #endif
+        }
     }
 
     #endregion
