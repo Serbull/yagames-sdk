@@ -95,9 +95,15 @@ mergeInto(LibraryManager.library, {
     GetDeviceInfoExtern: function () {
         const myJson = JSON.stringify(ysdk.deviceInfo);
         console.log('[YaGamesLib] Device info:', myJson);
-        console.log('[YaGamesLib] Device type:', ysdk.deviceInfo._type);
         console.log('[YaGamesLib] Device type:', ysdk.deviceInfo.type);
-        return ysdk.deviceInfo._type;
+        return StringToUnity(ysdk.deviceInfo.type);
+    },
+
+    StringToUnity : function (data) {
+        var bufferSize = lengthBytesUTF8(data) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(data, buffer, bufferSize);
+        return buffer;
     },
 
     CheckCanReviewExtern: function () {
