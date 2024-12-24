@@ -518,6 +518,7 @@ public class YaGames : MonoBehaviour
             if (_deviceType == null)
             {
                 _deviceType = GetDeviceInfoExtern();
+                Debug.Log(_deviceType);
                 _isDeviceTouchable = _deviceType == "mobile" || _deviceType == "tablet";
             }
 

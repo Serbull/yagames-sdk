@@ -96,7 +96,8 @@ mergeInto(LibraryManager.library, {
         const myJson = JSON.stringify(ysdk.deviceInfo);
         console.log('[YaGamesLib] Device info:', myJson);
         console.log('[YaGamesLib] Device type:', myJson._type);
-        return myJson._type;
+        console.log('[YaGamesLib] Device type:', myJson.type);
+        return myJson.type;
     },
 
     CheckCanReviewExtern: function () {
