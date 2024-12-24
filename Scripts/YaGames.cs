@@ -278,9 +278,9 @@ public class YaGames : MonoBehaviour
         _leaderboardData = data;
     }
 
-#endregion
+    #endregion
 
-#region Review
+    #region Review
 
     private static bool _isReviewAvailable;
 
@@ -346,9 +346,9 @@ public class YaGames : MonoBehaviour
         OnReviewFinish?.Invoke(false);
         ReviewNotAvailable("already requested");
     }
-#endregion
+    #endregion
 
-#region Purchasing
+    #region Purchasing
 
     private static readonly List<string> _restoredProducts = new();
 
@@ -427,9 +427,9 @@ public class YaGames : MonoBehaviour
         OnPurchasesRestored?.Invoke();
     }
 
-#endregion
+    #endregion
 
-#region Flags
+    #region Flags
 
     private static Dictionary<string, string> _flags = new();
     public static bool IsFlagsLoaded { get; private set; }
@@ -482,9 +482,9 @@ public class YaGames : MonoBehaviour
 #endif
     }
 
-#endregion
+    #endregion
 
-#region Language
+    #region Language
 
     [DllImport("__Internal")]
     private static extern string GetLanguageExtern();
@@ -498,7 +498,34 @@ public class YaGames : MonoBehaviour
 #endif
     }
 
-#endregion
+    #endregion
+
+    #region DeviceInfo
+
+    private static bool _isDeviceDefined;
+    private static bool _isDeviceTouchable;
+
+    [DllImport("__Internal")]
+    private static extern string GetDeviceInfoExtern();
+
+    public static bool IsDeviceTouchable()
+    {
+#if UNITY_EDITOR
+        return false;
+#else
+        if (!_isDeviceDefined)
+        {
+            var json = JsonConvert.DeserializeObject<Dictionary<string, string>>(GetDeviceInfoExtern());
+            var device = json["type"];
+            _isDeviceTouchable = device == "mobile" || device == "tablet";
+            _isDeviceDefined = true;
+        }
+
+        return _isDeviceTouchable;
+#endif
+    }
+
+    #endregion
 
     //#region CloudSaves
 

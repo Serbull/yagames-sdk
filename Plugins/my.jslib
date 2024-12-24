@@ -78,7 +78,7 @@ mergeInto(LibraryManager.library, {
             .then(res => {
                 console.log(res);
                 const myJson = JSON.stringify(res);
-                console.log('[MyJslib] Leaderboard loaded:', myJson);
+                console.log('[YaGamesLib] Leaderboard loaded:', myJson);
                 myGameInstance.SendMessage('YaGames', 'LeaderboardLoaded', myJson);
             });
         });
@@ -90,6 +90,12 @@ mergeInto(LibraryManager.library, {
         var buffer = _malloc(bufferSize);
         stringToUTF8(lang, buffer, bufferSize);
         return buffer;
+    },
+
+    GetDeviceInfoExtern: function () {
+        const myJson = JSON.stringify(ysdk.deviceInfo);
+        console.log('[YaGamesLib] Device info:', myJson);
+        return myJson;
     },
 
     CheckCanReviewExtern: function () {
@@ -200,7 +206,7 @@ mergeInto(LibraryManager.library, {
         console.log('[MyJslib] Request flags');
         ysdk.getFlags().then(flags => {
             const myJson = JSON.stringify(flags);
-            console.log('[MyJslib] Flags loaded:', myJson);
+            console.log('[YaGamesLib] Flags loaded:', myJson);
             myGameInstance.SendMessage('YaGames', 'FlagsLoaded', myJson);
         });
     },
