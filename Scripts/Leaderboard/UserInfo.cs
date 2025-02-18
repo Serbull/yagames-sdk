@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-namespace YaGamesSDK.Leaderboard
+
+namespace YaGamesSDK
 {
     public class UserInfo : MonoBehaviour
     {

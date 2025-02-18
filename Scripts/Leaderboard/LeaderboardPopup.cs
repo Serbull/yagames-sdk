@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace YaGamesSDK.Leaderboard
+namespace YaGamesSDK
 {
     public class LeaderboardPopup : MonoBehaviour
     {

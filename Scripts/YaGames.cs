@@ -19,6 +19,8 @@ public class YaGames : MonoBehaviour
 
     private float _currentInterstitialRepeatTimer;
 
+    public readonly static Leaderboards Leaderboards = new();
+
     private void Awake()
     {
         if (Instance == null)
@@ -244,38 +246,10 @@ public class YaGames : MonoBehaviour
 
     #region Leaderboard
 
-    private static string _leaderboardData;
-
-    public static bool IsLeaderboardLoaded => _leaderboardData != null;
-    public static string LeaderboardData => _leaderboardData;
-
-    [DllImport("__Internal")]
-    private static extern void SetLeaderboardScoreExtern(string leaderboardName, int score);
-
-    [DllImport("__Internal")]
-    private static extern void LoadLeaderboardExtern(string leaderboardName, bool includeUser, int quantityAround, int quantityTop);
-
-    public static void SetLeaderboadScore(string leaderboardName, int score)
-    {
-        Debug.Log($"[YandexSDK] Set Leaderboard: '{leaderboardName}' score: {score}");
-#if !UNITY_EDITOR
-        SetLeaderboardScoreExtern(leaderboardName, score);
-#endif
-    }
-
-    public static void LoadLeaderboard(string leaderboardName, bool includeUser = true, int quantityAround = 10, int quantityTop = 10)
-    {
-        Debug.Log($"[YandexSDK] Load Leaderboard: '{leaderboardName}'");
-#if !UNITY_EDITOR
-        LoadLeaderboardExtern(leaderboardName, includeUser, quantityAround, quantityTop);
-#endif
-    }
-
-    //not work
     public void LeaderboardLoaded(string data)
     {
-        Debug.Log($"[YandexSDK] Leaderboard loaded: {data}");
-        _leaderboardData = data;
+        Log($"Leaderboard loaded: {data}");
+        (Leaderboards as ILeaderboards).LeaderboardLoaded(data);
     }
 
     #endregion
@@ -564,4 +538,10 @@ public class YaGames : MonoBehaviour
     //    }
 
     //#endregion
+
+    public static void Log(string message)
+    {
+        message = "<b><color=#ffbf00>[YandexSDK]</color></b> " + message;
+        Debug.Log(message);
+    }
 }
