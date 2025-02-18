@@ -27,7 +27,7 @@ namespace YaGamesSDK
         {
             YaGames.Log($"Set Leaderboard: '{leaderboardName}' score: {score}");
 #if !UNITY_EDITOR
-        SetLeaderboardScoreExtern(leaderboardName, score);
+            SetLeaderboardScoreExtern(leaderboardName, score);
 #endif
         }
 
@@ -35,7 +35,7 @@ namespace YaGamesSDK
         {
             YaGames.Log($"Load Leaderboard: '{leaderboardName}'");
 #if !UNITY_EDITOR
-        LoadLeaderboardExtern(leaderboardName, includeUser, quantityAround, quantityTop);
+            LoadLeaderboardExtern(leaderboardName, includeUser, quantityAround, quantityTop);
 #endif
         }
 
