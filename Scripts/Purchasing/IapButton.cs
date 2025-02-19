@@ -61,7 +61,7 @@ namespace YaGamesSDK.Components
                     }
                     else
                     {
-                        Debug.LogError($"Consume product: {product}");
+                       YaGames.LogError($"Consume product: {product}");
                     }
                 }
             }
@@ -98,7 +98,7 @@ namespace YaGamesSDK.Components
             }
             else
             {
-                Debug.LogError("'IsBought' works only for Non Consumables");
+                YaGames.LogError("'IsBought' works only for NonConsumables");
                 return false;
             }
         }

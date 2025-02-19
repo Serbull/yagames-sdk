@@ -479,4 +479,14 @@ public class YaGames : MonoBehaviour
 #endif
         Debug.Log(message);
     }
+
+    public static void LogError(string message)
+    {
+#if UNITY_EDITOR
+        message = "<b><color=#ffbf00>[YandexSDK]</color></b> " + message;
+#else
+        message = "[YandexSDK] " + message;
+#endif
+        Debug.LogError(message);
+    }
 }
