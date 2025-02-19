@@ -1,4 +1,4 @@
-using System;
+using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -14,12 +14,12 @@ namespace YaGamesSDK.Components
             NonConsumable
         }
 
-        public event Action OnPurchaseSuccessful;
-
         [SerializeField] private string _productId;
         [SerializeField] private Type _type;
         [Space]
         [SerializeField] private TextMeshProUGUI _priceText;
+        [Space]
+        public UnityEvent onPurchaseSuccessful;
 
         private bool _isBought;
 
@@ -76,7 +76,7 @@ namespace YaGamesSDK.Components
         {
             if (productId == _productId)
             {
-                OnPurchaseSuccessful?.Invoke();
+                onPurchaseSuccessful?.Invoke();
                 FetchProduct();
             }
         }
