@@ -1,4 +1,4 @@
-﻿
+
 namespace YaGamesSDK
 {
     public class LeaderboardData
@@ -8,7 +8,7 @@ namespace YaGamesSDK
             public string name;
         }
 
-        public class Entries
+        public class Entry
         {
             public class Player
             {
@@ -24,7 +24,7 @@ namespace YaGamesSDK
         public float lastFetchTime;
 
         public Leaderboard leaderboard;
-        public Entries[] entries;
+        public Entry[] entries;
         public int userRank;
     }
 }
