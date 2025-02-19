@@ -48,7 +48,7 @@ namespace YaGamesSDK
 #endif
         }
 
-        public static void Purchase(string productId, bool consumable)
+        public static void Purchase(string productId)
         {
 #if UNITY_EDITOR
             OnPurchaseSuccessful?.Invoke(productId);
