@@ -22,8 +22,9 @@ public class YaGames : MonoBehaviour
 
     private float _currentInterstitialRepeatTimer;
 
-    private readonly static Leaderboards _leaderboards = new();
     private readonly static CloudSaves _cloudSaves = new();
+    private readonly static Purchasing _purchasing = new();
+    private readonly static Leaderboards _leaderboards = new();
 
     private void Awake()
     {
@@ -45,13 +46,16 @@ public class YaGames : MonoBehaviour
             CloudSaves.LoadGame();
         }
 
+        Purchasing.RestorePurchases();
+
         if (_sendGameReadyOnStart)
         {
             SendGameReady();
         }
 
+
+
 #if !UNITY_EDITOR
-        //RestorePurchases();
         CheckCanReviewExtern();
         LoadFlagsExtern();
 #endif
@@ -269,6 +273,34 @@ public class YaGames : MonoBehaviour
         _cloudSaves.DataLoaded(data);
     }
 
+    //PURCHASING
+
+    public void PurchasingPurchaseSuccessful(object productIdString)
+    {
+        var productId = productIdString as string;
+        Log("Purchase successful: " + productId);
+        _purchasing.PurchaseSuccessful(productId);
+    }
+
+    public void PurchasingPurchaseFailed(object productIdString)
+    {
+        var productId = productIdString as string;
+        Log("Purchase failed: " + productId);
+    }
+
+    public void PurchasingProductRestored(object productIdString)
+    {
+        var productId = productIdString as string;
+        Log("Product restored: " + productId);
+        _purchasing.PurchaseRestored(productId);
+    }
+
+    public void PurchasingAllProductsRestored()
+    {
+        Log("All products restored");
+        _purchasing.AllProductsRestored();
+    }
+
     #endregion
 
     #region Review
@@ -337,87 +369,6 @@ public class YaGames : MonoBehaviour
         OnReviewFinish?.Invoke(false);
         ReviewNotAvailable("already requested");
     }
-    #endregion
-
-    #region Purchasing
-
-    private static readonly List<string> _restoredProducts = new();
-
-    public static bool IsPurchasesRestored { get; private set; }
-    public static string[] RestoredProducts => _restoredProducts.ToArray();
-
-    public static event Action OnPurchasesRestored;
-    public static event Action<string> OnPurchaseSuccessful;
-
-    [DllImport("__Internal")]
-    private static extern string GetProductPriceExtern(string productId);
-
-    [DllImport("__Internal")]
-    private static extern void PurchaseConsumableExtern(string productId);
-
-    [DllImport("__Internal")]
-    private static extern void PurchaseNonConsumableExtern(string productId);
-
-    [DllImport("__Internal")]
-    private static extern void RestorePurchasesExtern();
-
-    public static string GetProductPrice(string productId)
-    {
-#if UNITY_EDITOR
-        return "-";
-#endif
-#pragma warning disable CS0162 // Unreachable code detected
-        return GetProductPriceExtern(productId);
-#pragma warning restore CS0162 // Unreachable code detected
-    }
-
-    public static void RestorePurchases()
-    {
-        if (IsPurchasesRestored) return;
-
-        RestorePurchasesExtern();
-    }
-
-    public static void Purchase(string productId, bool consumable)
-    {
-#if UNITY_EDITOR
-        Instance.PurchaseSuccessful(productId);
-#else
-        if (consumable) PurchaseConsumableExtern(productId);
-        else PurchaseNonConsumableExtern(productId);
-#endif
-    }
-
-    public void PurchaseSuccessful(object productIdString)
-    {
-        var productId = productIdString as string;
-        Debug.Log("[YandexSDK] Purchase successful: " + productId);
-        OnPurchaseSuccessful?.Invoke(productId);
-    }
-
-    public void PurchaseFailed(object productIdString)
-    {
-        var productId = productIdString as string;
-        Debug.Log("[YandexSDK] Purchase failed: " + productId);
-    }
-
-    public void PurchaseRestored(object productIdString)
-    {
-        var productId = productIdString as string;
-        Debug.Log("[YandexSDK] Purchase restored: " + productId);
-        if (!_restoredProducts.Contains(productId))
-        {
-            _restoredProducts.Add(productId);
-        }
-    }
-
-    public void PurchasesRestored()
-    {
-        Debug.Log("[YandexSDK] Purchases successful restored.");
-        IsPurchasesRestored = true;
-        OnPurchasesRestored?.Invoke();
-    }
-
     #endregion
 
     #region Flags

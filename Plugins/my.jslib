@@ -142,13 +142,13 @@ mergeInto(LibraryManager.library, {
         .then(purchases => {
             purchases.forEach((purchase) => {
                 console.log('Restore: ', purchase.productID);
-                myGameInstance.SendMessage('YaGames', 'PurchaseRestored', purchase.productID);
+                myGameInstance.SendMessage('YaGames', 'PurchasingProductRestored', purchase.productID);
             });
             console.log('Purchases restored successful');
-            myGameInstance.SendMessage('YaGames', 'PurchasesRestored');
+            myGameInstance.SendMessage('YaGames', 'PurchasingAllProductsRestored');
         }).catch(err => {
-            console.log('Purchases restored: ', err);
-            myGameInstance.SendMessage('YaGames', 'PurchasesRestored');
+            console.log('Purchases restored with error: ', err);
+            myGameInstance.SendMessage('YaGames', 'PurchasingAllProductsRestored');
             // Выбрасывает исключение USER_NOT_AUTHORIZED для неавторизованных пользователей.
         })
     },
@@ -163,11 +163,11 @@ mergeInto(LibraryManager.library, {
         payments.purchase({ id: productIdString })
         .then(purchase => {
             console.log('Purchase successful: ', productIdString);
-            myGameInstance.SendMessage('YaGames', 'PurchaseSuccessful', productIdString);
+            myGameInstance.SendMessage('YaGames', 'PurchasingPurchaseSuccessful', productIdString);
             // Покупка успешно совершена!
         }).catch(err => {
             console.log('Purchase failed: ', productIdString);
-            myGameInstance.SendMessage('YaGames', 'PurchaseFailed', productIdString);
+            myGameInstance.SendMessage('YaGames', 'PurchasingPurchaseFailed', productIdString);
             // Покупка не удалась: в консоли разработчика не добавлен товар с таким id,
             // пользователь не авторизовался, передумал и закрыл окно оплаты,
             // истекло отведенное на покупку время, не хватило денег и т. д.
