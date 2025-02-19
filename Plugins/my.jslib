@@ -174,7 +174,8 @@ mergeInto(LibraryManager.library, {
         var productIdString = UTF8ToString(productId);
         console.log('Consume purchase: ', productIdString);
         payments.getPurchases().then(purchases => {
-            if (purchases.some(purchase => purchase.productID === productIdString)) {
+            let purchase = purchases.find(p => p.productID === productIdString);
+            if (purchase) {
                 payments.consumePurchase(purchase.purchaseToken);
             }
         });
