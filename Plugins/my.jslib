@@ -76,7 +76,12 @@ mergeInto(LibraryManager.library, {
         .then(lb => {
             lb.getLeaderboardEntries(nameString, { quantityTop: quantityTop, includeUser: includeUser, quantityAround: quantityAround })
             .then(res => {
-                console.log(res);
+
+                res.entries = res.entries.map(entry => ({
+                    ...entry,
+                    avatarUrl: entry.player.getAvatarSrc('small')
+                }));
+
                 const myJson = JSON.stringify(res);
                 console.log('[YaGamesLib] Leaderboard loaded:', myJson);
                 myGameInstance.SendMessage('YaGames', 'LeaderboardLoaded', myJson);
