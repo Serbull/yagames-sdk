@@ -12,10 +12,10 @@ namespace YaGamesSDK
         private static extern string GetProductPriceExtern(string productId);
 
         [DllImport("__Internal")]
-        private static extern void PurchaseConsumableExtern(string productId);
+        private static extern void PurchaseExtern(string productId);
 
         [DllImport("__Internal")]
-        private static extern void PurchaseNonConsumableExtern(string productId);
+        private static extern void ConsumePurchaseExtern(string productId);
 
         [DllImport("__Internal")]
         private static extern void RestorePurchasesExtern();
@@ -53,9 +53,20 @@ namespace YaGamesSDK
 #if UNITY_EDITOR
             OnPurchaseSuccessful?.Invoke(productId);
 #else
-            if (consumable) PurchaseConsumableExtern(productId);
-            else PurchaseNonConsumableExtern(productId);
+            PurchaseExtern(productId);
 #endif
+        }
+
+        public static void ConsumePurchase(string productId)
+        {
+            if (_restoredProducts.Contains(productId))
+            {
+                _restoredProducts.Remove(productId);
+
+#if !UNITY_EDITOR
+                ConsumePurchaseExtern(productId);
+#endif
+            }
         }
 
         public void PurchaseSuccessful(string productId)

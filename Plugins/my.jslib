@@ -153,11 +153,7 @@ mergeInto(LibraryManager.library, {
         })
     },
 
-    PurchaseConsumableExtern: function (productId) {
-        console.log('Error: method not exist');
-    },
-
-    PurchaseNonConsumableExtern: function (productId) {
+    PurchaseExtern: function (productId) {
         var productIdString = UTF8ToString(productId);
         console.log('Purchase: ', productIdString);
         payments.purchase({ id: productIdString })
@@ -172,6 +168,16 @@ mergeInto(LibraryManager.library, {
             // пользователь не авторизовался, передумал и закрыл окно оплаты,
             // истекло отведенное на покупку время, не хватило денег и т. д.
         })
+    },
+
+    ConsumePurchaseExtern: function (productId) {
+        var productIdString = UTF8ToString(productId);
+        console.log('Consume purchase: ', productIdString);
+        payments.getPurchases().then(purchases => {
+            if (purchases.some(purchase => purchase.productID === productIdString)) {
+                payments.consumePurchase(purchase.purchaseToken);
+            }
+        });
     },
 
     GetProductPriceExtern: function (productId) {
