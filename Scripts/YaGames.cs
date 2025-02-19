@@ -14,6 +14,8 @@ public class YaGames : MonoBehaviour
 
     [Header("CloudSaves")]
     [SerializeField] private bool _loadCloudSavesOnStart = false;
+    [Header("Purchases")]
+    [SerializeField] private bool _restorePurchasesOnStart = false;
     [Space]
     [SerializeField] private bool _sendGameReadyOnStart = true;
     [Space]
@@ -46,7 +48,10 @@ public class YaGames : MonoBehaviour
             CloudSaves.LoadGame();
         }
 
-        Purchasing.RestorePurchases();
+        if (_restorePurchasesOnStart)
+        {
+            Purchasing.RestorePurchases();
+        }
 
         if (_sendGameReadyOnStart)
         {

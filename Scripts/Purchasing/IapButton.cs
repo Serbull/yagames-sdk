@@ -61,7 +61,7 @@ namespace YaGamesSDK.Components
                     }
                     else
                     {
-                       YaGames.LogError($"Consume product: {product}");
+                        YaGames.LogError($"Consume product: {product}");
                     }
                 }
             }
