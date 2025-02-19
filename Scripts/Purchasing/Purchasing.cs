@@ -51,7 +51,7 @@ namespace YaGamesSDK
         public static void Purchase(string productId)
         {
 #if UNITY_EDITOR
-            OnPurchaseSuccessful?.Invoke(productId);
+            new Purchasing().PurchaseSuccessful(productId);
 #else
             PurchaseExtern(productId);
 #endif
