@@ -71,15 +71,13 @@ namespace YaGamesSDK
 
         public void PurchaseSuccessful(string productId)
         {
+            _restoredProducts.Add(productId);
             OnPurchaseSuccessful?.Invoke(productId);
         }
 
         public void PurchaseRestored(string productId)
         {
-            if (!_restoredProducts.Contains(productId))
-            {
-                _restoredProducts.Add(productId);
-            }
+            _restoredProducts.Add(productId);
         }
 
         public void AllProductsRestored()
