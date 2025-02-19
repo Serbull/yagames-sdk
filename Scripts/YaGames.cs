@@ -19,7 +19,7 @@ public class YaGames : MonoBehaviour
 
     private float _currentInterstitialRepeatTimer;
 
-    public readonly static Leaderboards Leaderboards = new();
+    private readonly static Leaderboards _leaderboards = new();
 
     private void Awake()
     {
@@ -249,7 +249,7 @@ public class YaGames : MonoBehaviour
     public void LeaderboardLoaded(string data)
     {
         Log($"Leaderboard loaded: {data}");
-        (Leaderboards as ILeaderboards).LeaderboardLoaded(data);
+        _leaderboards.LeaderboardLoaded(data);
     }
 
     #endregion

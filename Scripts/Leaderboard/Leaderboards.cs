@@ -6,16 +6,11 @@ using UnityEngine;
 
 namespace YaGamesSDK
 {
-    public interface ILeaderboards
-    {
-        void LeaderboardLoaded(string data);
-    }
-
-    public class Leaderboards : ILeaderboards
+    public class Leaderboards
     {
         private static readonly List<LeaderboardData> _leaderboardDatas = new();
 
-        public event Action<string> OnLeaderboardLoaded;
+        public static event Action<string> OnLeaderboardLoaded;
 
         [DllImport("__Internal")]
         private static extern void SetLeaderboardScoreExtern(string leaderboardName, int score);
@@ -23,7 +18,7 @@ namespace YaGamesSDK
         [DllImport("__Internal")]
         private static extern void LoadLeaderboardExtern(string leaderboardName, bool includeUser, int quantityAround, int quantityTop);
 
-        public void SetScore(string leaderboardName, int score)
+        public static void SetScore(string leaderboardName, int score)
         {
             YaGames.Log($"Set Leaderboard: '{leaderboardName}' score: {score}");
 #if !UNITY_EDITOR
@@ -31,15 +26,15 @@ namespace YaGamesSDK
 #endif
         }
 
-        public void Load(string leaderboardName, bool includeUser = true, int quantityAround = 10, int quantityTop = 10)
+        public static void Fetch(string leaderboardName, bool includeUser = true, int quantityAround = 10, int quantityTop = 10)
         {
-            YaGames.Log($"Load Leaderboard: '{leaderboardName}'");
+            YaGames.Log($"Fetch Leaderboard: '{leaderboardName}'");
 #if !UNITY_EDITOR
             LoadLeaderboardExtern(leaderboardName, includeUser, quantityAround, quantityTop);
 #endif
         }
 
-        void ILeaderboards.LeaderboardLoaded(string data)
+        public void LeaderboardLoaded(string data)
         {
             var dataClass = JsonConvert.DeserializeObject<LeaderboardData>(data);
             var leaderboardId = GetLeaderboadId(dataClass.leaderboard.name);
@@ -48,7 +43,7 @@ namespace YaGamesSDK
                 _leaderboardDatas.Add(dataClass);
             }
 
-            dataClass.lastLoadTime = Time.unscaledTime;
+            dataClass.lastFetchTime = Time.unscaledTime;
             OnLeaderboardLoaded?.Invoke(dataClass.leaderboard.name);
         }
 
@@ -65,7 +60,7 @@ namespace YaGamesSDK
             return -1;
         }
 
-        public LeaderboardData GetData(string leaderboardName)
+        public static LeaderboardData GetData(string leaderboardName)
         {
             foreach (var data in _leaderboardDatas)
             {
@@ -78,7 +73,7 @@ namespace YaGamesSDK
             return null;
         }
 
-        public bool IsLoaded(string leaderboardName)
+        public static bool IsLoaded(string leaderboardName)
         {
             return GetData(leaderboardName) != null;
         }

@@ -18,9 +18,10 @@ namespace YaGamesSDK
             public int rank;
             public int score;
             public Player player;
+            public string avatarUrl;
         }
 
-        public float lastLoadTime;
+        public float lastFetchTime;
 
         public Leaderboard leaderboard;
         public Entries[] entries;
