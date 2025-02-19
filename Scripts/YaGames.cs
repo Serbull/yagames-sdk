@@ -45,12 +45,12 @@ public class YaGames : MonoBehaviour
             CloudSaves.LoadGame();
         }
 
-#if !UNITY_EDITOR
         if (_sendGameReadyOnStart)
         {
             SendGameReady();
         }
 
+#if !UNITY_EDITOR
         //RestorePurchases();
         CheckCanReviewExtern();
         LoadFlagsExtern();
@@ -97,10 +97,13 @@ public class YaGames : MonoBehaviour
         if (_isGameReadySent)
             return;
 
-        Debug.Log("[YaGamesSDK] Send GameReady");
+        Log("Send GameReady");
         _isGameReadySent = true;
+#if !UNITY_EDITOR
         SendGameReadyExtern();
+#endif
     }
+
     #endregion
 
     #region Ads

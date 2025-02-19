@@ -6,24 +6,44 @@ namespace YaGamesSDK
 {
     public class CloudSaves
     {
-        public static event Action OnDataLoaded;
-
-        public static bool IsDataLoaded { get; private set; }
-        public static string Data { get; private set; }
-
         [DllImport("__Internal")]
         private static extern void SaveGameExtern(string data);
 
         [DllImport("__Internal")]
         private static extern void LoadGameExtern();
 
+        public static event Action OnDataLoaded;
+
+        private static bool _isDataLoaded;
+        private static string _data;
+
+        public static bool IsDataLoaded
+        {
+            get
+            {
+#if UNITY_EDITOR
+                return true;
+#else
+                return _isDataLoaded;
+#endif
+            }
+        }
+
+        public static string Data
+        {
+            get
+            {
+#if UNITY_EDITOR
+                return PlayerPrefs.GetString("userData");
+#else
+                return _data;
+#endif
+            }
+        }
+
         public static void LoadGame()
         {
-#if UNITY_EDITOR
-            IsDataLoaded = true;
-            Data = PlayerPrefs.GetString("userData");
-            OnDataLoaded?.Invoke();
-#else
+#if !UNITY_EDITOR
             LoadGameExtern();
 #endif
         }
@@ -39,8 +59,8 @@ namespace YaGamesSDK
 
         public void DataLoaded(string data)
         {
-            IsDataLoaded = true;
-            Data = data;
+            _isDataLoaded = true;
+            _data = data;
             OnDataLoaded?.Invoke();
         }
     }
