@@ -199,14 +199,14 @@ mergeInto(LibraryManager.library, {
 
     LoadGameExtern: function () {
         if(player == null) {
-            console.log("Player is null: return null save data");
-            myGameInstance.SendMessage('YaGames', 'UserDataLoaded', null);
+            console.log('[YaGamesLib] Player is null: return null save data');
+            myGameInstance.SendMessage('YaGames', 'CloudSavesLoaded', null);
             return;
         }
         player.getData().then(_data => {
             const myJSON = JSON.stringify(_data);
-            console.log('Player data: ', myJSON);
-            myGameInstance.SendMessage('YaGames', 'UserDataLoaded', myJSON);
+            console.log('[YaGamesLib] Player data: ', myJSON);
+            myGameInstance.SendMessage('YaGames', 'CloudSavesLoaded', myJSON);
         });
     },
 

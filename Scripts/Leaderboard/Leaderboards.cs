@@ -47,7 +47,7 @@ namespace YaGamesSDK
             OnLeaderboardLoaded?.Invoke(dataClass.leaderboard.name);
         }
 
-        private int GetLeaderboadId(string leaderboardName)
+        private static int GetLeaderboadId(string leaderboardName)
         {
             for (int i = 0; i < _leaderboardDatas.Count; i++)
             {

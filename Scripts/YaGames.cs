@@ -12,6 +12,9 @@ public class YaGames : MonoBehaviour
 
     private static Action _rewardedAdCallback;
 
+    [Header("CloudSaves")]
+    [SerializeField] private bool _loadCloudSavesOnStart = false;
+    [Space]
     [SerializeField] private bool _sendGameReadyOnStart = true;
     [Space]
     [SerializeField] private bool _showInterstitialOnRepeat;
@@ -20,6 +23,7 @@ public class YaGames : MonoBehaviour
     private float _currentInterstitialRepeatTimer;
 
     private readonly static Leaderboards _leaderboards = new();
+    private readonly static CloudSaves _cloudSaves = new();
 
     private void Awake()
     {
@@ -36,12 +40,16 @@ public class YaGames : MonoBehaviour
 
     private void Start()
     {
+        if (_loadCloudSavesOnStart)
+        {
+            CloudSaves.LoadGame();
+        }
+
 #if !UNITY_EDITOR
         if (_sendGameReadyOnStart)
         {
             SendGameReady();
         }
-        //LoadGame();
 
         //RestorePurchases();
         CheckCanReviewExtern();
@@ -244,12 +252,18 @@ public class YaGames : MonoBehaviour
 
     #endregion
 
-    #region Leaderboard
+    #region JS_METHODS
 
     public void LeaderboardLoaded(string data)
     {
         Log($"Leaderboard loaded: {data}");
         _leaderboards.LeaderboardLoaded(data);
+    }
+
+    public void CloudSavesLoaded(string data)
+    {
+        Log($"CloudSaves loaded: {data}");
+        _cloudSaves.DataLoaded(data);
     }
 
     #endregion
@@ -501,43 +515,6 @@ public class YaGames : MonoBehaviour
     }
 
     #endregion
-
-    //#region CloudSaves
-
-    //    public static bool UserPrefsLoaded { get; private set; }
-
-    //    [DllImport("__Internal")]
-    //    private static extern void SaveGameExtern(string data);
-
-    //    [DllImport("__Internal")]
-    //    private static extern void LoadGameExtern();
-
-    //    public static void LoadGame()
-    //    {
-    //#if UNITY_EDITOR
-    //        UserPrefs.SetUserData(PlayerPrefs.GetString("userData"));
-    //        UserPrefsLoaded = true;
-    //#else
-    //        LoadGameExtern();
-    //#endif
-    //    }
-
-    //    public static void SaveGame()
-    //    {
-    //#if UNITY_EDITOR
-    //        PlayerPrefs.SetString("userData", UserPrefs.GetSaveData());
-    //#else
-    //        SaveGameExtern(UserPrefs.GetSaveData());
-    //#endif
-    //    }
-
-    //    public void UserDataLoaded(string data)
-    //    {
-    //        UserPrefs.SetUserData(data);
-    //        UserPrefsLoaded = true;
-    //    }
-
-    //#endregion
 
     public static void Log(string message)
     {

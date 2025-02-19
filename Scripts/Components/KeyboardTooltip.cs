@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace YaGamesSDK
+namespace YaGamesSDK.Components
 {
     public class KeyboardTooltip : MonoBehaviour
     {

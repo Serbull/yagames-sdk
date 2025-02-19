@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-[CustomEditor(typeof(YaGames))]
-public class YaGamesEditor : Editor
+namespace YaGamesSDK
 {
-    private SerializedProperty _showInterstitialOnRepeat;
-
-    private void OnEnable()
+    [CustomEditor(typeof(YaGames))]
+    public class YaGamesEditor : Editor
     {
-        _showInterstitialOnRepeat = serializedObject.FindProperty("_showInterstitialOnRepeat");
-    }
+        private SerializedProperty _showInterstitialOnRepeat;
 
-
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
-
-        var exclude = new List<string>();
-        if (!_showInterstitialOnRepeat.boolValue)
+        private void OnEnable()
         {
-            exclude.Add("_interstialRepeatTimer");
+            _showInterstitialOnRepeat = serializedObject.FindProperty("_showInterstitialOnRepeat");
         }
 
-        DrawPropertiesExcluding(serializedObject, exclude.ToArray());
-        serializedObject.ApplyModifiedProperties();
+
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+
+            var exclude = new List<string>();
+            if (!_showInterstitialOnRepeat.boolValue)
+            {
+                exclude.Add("_interstialRepeatTimer");
+            }
+
+            DrawPropertiesExcluding(serializedObject, exclude.ToArray());
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }
 #endif
