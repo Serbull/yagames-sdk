@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 namespace YaGamesSDK.Components
 {
+    [RequireComponent(typeof(Button))]
     public class IapButton : MonoBehaviour
     {
         public enum Type
@@ -20,6 +22,11 @@ namespace YaGamesSDK.Components
         [SerializeField] private TextMeshProUGUI _priceText;
 
         private bool _isBought;
+
+        private void Awake()
+        {
+            GetComponent<Button>().onClick.AddListener(Purchase);
+        }
 
         private void OnEnable()
         {
@@ -58,6 +65,11 @@ namespace YaGamesSDK.Components
                     }
                 }
             }
+        }
+
+        private void Purchase()
+        {
+            Purchasing.Purchase(_productId);
         }
 
         private void Purchasing_OnPurchaseSuccessful(string productId)
