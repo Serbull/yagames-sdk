@@ -72,22 +72,26 @@ namespace YaGamesSDK
 
         public void PurchaseSuccessful(string productId)
         {
+            YaGames.Log("Purchase successful: " + productId);
             _purchasedProducts.Add(productId);
             OnPurchaseSuccessful?.Invoke(productId);
         }
 
         public void PurchaseFailed(string productId)
         {
+            YaGames.Log("Purchase failed: " + productId);
             OnPurchaseFailed?.Invoke(productId);
         }
 
         public void PurchaseRestored(string productId)
         {
+            YaGames.Log("Product restored: " + productId);
             _purchasedProducts.Add(productId);
         }
 
         public void AllProductsRestored()
         {
+            YaGames.Log("All products restored");
             IsPurchasesRestored = true;
             OnPurchasesRestored?.Invoke();
         }

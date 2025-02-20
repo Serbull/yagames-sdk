@@ -283,27 +283,23 @@ public class YaGames : MonoBehaviour
     public void PurchasingPurchaseSuccessful(object productIdString)
     {
         var productId = productIdString as string;
-        Log("Purchase successful: " + productId);
         _purchasing.PurchaseSuccessful(productId);
     }
 
     public void PurchasingPurchaseFailed(object productIdString)
     {
         var productId = productIdString as string;
-        Log("Purchase failed: " + productId);
         _purchasing.PurchaseFailed(productId);
     }
 
     public void PurchasingProductRestored(object productIdString)
     {
         var productId = productIdString as string;
-        Log("Product restored: " + productId);
         _purchasing.PurchaseRestored(productId);
     }
 
     public void PurchasingAllProductsRestored()
     {
-        Log("All products restored");
         _purchasing.AllProductsRestored();
     }
 
