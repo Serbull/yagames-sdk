@@ -16,6 +16,7 @@ namespace YaGamesSDK
 
         private static bool _isDataLoaded;
         private static string _data;
+        private static string _lastSavedData;
 
         public static bool IsDataLoaded
         {
@@ -50,6 +51,10 @@ namespace YaGamesSDK
 
         public static void SaveGame(string data)
         {
+            if (_lastSavedData == data) return;
+
+            _lastSavedData = data;
+
 #if UNITY_EDITOR
             PlayerPrefs.SetString("userData", data);
 #else
