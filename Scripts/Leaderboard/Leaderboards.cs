@@ -42,6 +42,10 @@ namespace YaGamesSDK
             {
                 _leaderboardDatas.Add(dataClass);
             }
+            else
+            {
+                _leaderboardDatas[leaderboardId] = dataClass;
+            }
 
             dataClass.lastFetchTime = Time.unscaledTime;
             OnLeaderboardLoaded?.Invoke(dataClass.leaderboard.name);
