@@ -13,16 +13,16 @@ namespace YaGamesSDK
         public static event Action<string> OnLeaderboardLoaded;
 
         [DllImport("__Internal")]
-        private static extern void SetLeaderboardScoreExtern(string leaderboardName, int score);
+        private static extern void SetLeaderboardScoreExtern(string leaderboardName, int score, string extraData);
 
         [DllImport("__Internal")]
         private static extern void LoadLeaderboardExtern(string leaderboardName, bool includeUser, int quantityAround, int quantityTop);
 
-        public static void SetScore(string leaderboardName, int score)
+        public static void SetScore(string leaderboardName, int score, string extraData = null)
         {
-            YaGames.Log($"Set Leaderboard: '{leaderboardName}' score: {score}");
+            YaGames.Log($"Set Leaderboard: '{leaderboardName}' score: {score} extraData: '{extraData}'");
 #if !UNITY_EDITOR
-            SetLeaderboardScoreExtern(leaderboardName, score);
+            SetLeaderboardScoreExtern(leaderboardName, score, extraData);
 #endif
         }
 

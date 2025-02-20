@@ -54,12 +54,13 @@ mergeInto(LibraryManager.library, {
         ysdk.adv.hideBannerAdv();
     },
 
-    SetLeaderboardScoreExtern: function (name, score) {
+    SetLeaderboardScoreExtern: function (name, score, extraData) {
         var nameString = UTF8ToString(name);
+        var extraDataString = UTF8ToString(extraData);
         ysdk.isAvailableMethod('leaderboards.setLeaderboardScore')
         .then(function (isAvailable) {
             if (isAvailable) {
-                lb.setLeaderboardScore(nameString, score);
+                lb.setLeaderboardScore(nameString, score, extraDataString);
                 console.log('Successful add score to leaderboard');
             } else {
                 console.log('Cannot set leaderboard score!');

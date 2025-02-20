@@ -19,6 +19,7 @@ namespace YaGamesSDK
             public int score;
             public Player player;
             public string avatarUrl;
+            public string extraData;
         }
 
         public float lastFetchTime;
