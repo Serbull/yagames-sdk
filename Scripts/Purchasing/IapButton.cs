@@ -22,8 +22,6 @@ namespace YaGamesSDK.Components
         [SerializeField] private UnityEvent _onPurchaseSuccessful;
         [SerializeField] private UnityEvent _onPurchaseFailed;
 
-        private bool _isBought;
-
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(Purchase);
@@ -50,7 +48,7 @@ namespace YaGamesSDK.Components
         {
             _onPurchaseSuccessful.AddListener(() => onPurchaseCompleted(true));
             _onPurchaseFailed.AddListener(() => onPurchaseCompleted(false));
-            CheckPurchaseProduct(true);
+            CheckConsumableProduct(true);
         }
 
         public void RemoveListener(UnityAction<bool> onPurchaseCompleted)
@@ -59,30 +57,17 @@ namespace YaGamesSDK.Components
             _onPurchaseFailed.RemoveListener(() => onPurchaseCompleted(false));
         }
 
-        private void CheckPurchaseProduct(bool callbackOnConsumable)
+        private void CheckConsumableProduct(bool callbackPurchase)
         {
-            foreach (var product in Purchasing.PurchasedProducts)
+            if (_type == Type.Consumable && IsBought())
             {
-                if (product == _productId)
+                if (callbackPurchase)
                 {
-                    if (_type == Type.NonConsumable)
-                    {
-                        if (!_isBought)
-                        {
-                            _isBought = true;
-                        }
-                    }
-                    else
-                    {
-                        if (callbackOnConsumable)
-                        {
-                            Purchasing_OnPurchaseSuccessful(_productId);
-                        }
-                        else
-                        {
-                            YaGames.LogError($"Use Consume for product: {product}");
-                        }
-                    }
+                    Purchasing_OnPurchaseSuccessful(_productId);
+                }
+                else
+                {
+                    YaGames.LogError($"Use Consume for product: {_productId}");
                 }
             }
         }
@@ -103,7 +88,7 @@ namespace YaGamesSDK.Components
             if (productId == _productId)
             {
                 _onPurchaseSuccessful?.Invoke();
-                CheckPurchaseProduct(false);
+                CheckConsumableProduct(false);
             }
         }
 
@@ -125,16 +110,7 @@ namespace YaGamesSDK.Components
 
         public bool IsBought()
         {
-            if (_type == Type.NonConsumable)
-            {
-                CheckPurchaseProduct(false);
-                return _isBought;
-            }
-            else
-            {
-                YaGames.LogError("'IsBought' works only for NonConsumables");
-                return false;
-            }
+            return Purchasing.IsBought(_productId);
         }
     }
 }

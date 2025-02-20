@@ -95,5 +95,18 @@ namespace YaGamesSDK
             IsPurchasesRestored = true;
             OnPurchasesRestored?.Invoke();
         }
+
+        public static bool IsBought(string productId)
+        {
+            foreach (var product in _purchasedProducts)
+            {
+                if (product == productId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
