@@ -291,6 +291,7 @@ public class YaGames : MonoBehaviour
     {
         var productId = productIdString as string;
         Log("Purchase failed: " + productId);
+        _purchasing.PurchaseFailed(productId);
     }
 
     public void PurchasingProductRestored(object productIdString)

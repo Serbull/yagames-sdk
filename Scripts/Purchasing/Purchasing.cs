@@ -24,11 +24,12 @@ namespace YaGamesSDK
 
         public static event Action OnPurchasesRestored;
         public static event Action<string> OnPurchaseSuccessful;
+        public static event Action<string> OnPurchaseFailed;
 
-        private static readonly List<string> _restoredProducts = new();
+        private static readonly List<string> _purchasedProducts = new();
 
         public static bool IsPurchasesRestored { get; private set; }
-        public static string[] RestoredProducts => _restoredProducts.ToArray();
+        public static string[] PurchasedProducts => _purchasedProducts.ToArray();
 
         public static string GetProductPrice(string productId)
         {
@@ -59,9 +60,9 @@ namespace YaGamesSDK
 
         public static void ConsumePurchase(string productId)
         {
-            if (_restoredProducts.Contains(productId))
+            if (_purchasedProducts.Contains(productId))
             {
-                _restoredProducts.Remove(productId);
+                _purchasedProducts.Remove(productId);
 
 #if !UNITY_EDITOR
                 ConsumePurchaseExtern(productId);
@@ -71,13 +72,18 @@ namespace YaGamesSDK
 
         public void PurchaseSuccessful(string productId)
         {
-            _restoredProducts.Add(productId);
+            _purchasedProducts.Add(productId);
             OnPurchaseSuccessful?.Invoke(productId);
+        }
+
+        public void PurchaseFailed(string productId)
+        {
+            OnPurchaseFailed?.Invoke(productId);
         }
 
         public void PurchaseRestored(string productId)
         {
-            _restoredProducts.Add(productId);
+            _purchasedProducts.Add(productId);
         }
 
         public void AllProductsRestored()
