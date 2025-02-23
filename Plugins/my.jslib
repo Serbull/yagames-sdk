@@ -198,6 +198,21 @@ mergeInto(LibraryManager.library, {
         stringToUTF8(product.priceValue, buffer, bufferSize);
         return buffer;
     },
+
+    GetPriceCurrencyImageExtern: function (productId) {
+        var productIdString = UTF8ToString(productId);
+        var product = products.find(p => p.id === productIdString);
+        if (product) {
+            var result = product.getPriceCurrencyImage("medium");
+            var bufferSize = lengthBytesUTF8(result) + 1;
+            var buffer = _malloc(bufferSize);
+            stringToUTF8(result, buffer, bufferSize);
+            return buffer;
+        } else {
+            console.log('product not found: ', productIdString);
+            return 0;
+        }
+    },
     
     SaveGameExtern: function (data) {
         var dataString = UTF8ToString(data);
