@@ -12,7 +12,7 @@ namespace YaGamesSDK
         private static extern string GetProductPriceExtern(string productId);
 
         [DllImport("__Internal")]
-        private static extern string GetPriceCurrencyImageExtern(string productId);
+        private static extern string GetCurrencyImageExtern(string productId);
 
         [DllImport("__Internal")]
         private static extern void PurchaseExtern(string productId);
@@ -43,12 +43,12 @@ namespace YaGamesSDK
 #endif
         }
 
-        public static string GetPriceCurrencyImage(string productId)
+        public static string GetCurrencyImage(string productId)
         {
 #if UNITY_EDITOR
             return "-";
 #else
-            return GetPriceCurrencyImageExtern(productId);
+            return GetCurrencyImageExtern(productId);
 #endif
         }
 

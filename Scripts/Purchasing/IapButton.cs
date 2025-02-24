@@ -18,6 +18,7 @@ namespace YaGamesSDK.Components
         [SerializeField] private Type _type;
         [Space]
         [SerializeField] private TextMeshProUGUI _priceText;
+        [SerializeField] private WebImage _currencyImage;
         [Space]
         [SerializeField] private UnityEvent _onPurchaseSuccessful;
         [SerializeField] private UnityEvent _onPurchaseFailed;
@@ -29,6 +30,11 @@ namespace YaGamesSDK.Components
             if (_priceText != null)
             {
                 _priceText.text = Purchasing.GetProductPrice(_productId);
+            }
+
+            if (_currencyImage != null)
+            {
+                _currencyImage.LoadImageFromURL(Purchasing.GetCurrencyImage(_productId));
             }
         }
 

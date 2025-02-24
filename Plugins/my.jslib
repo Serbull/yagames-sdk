@@ -199,7 +199,7 @@ mergeInto(LibraryManager.library, {
         return buffer;
     },
 
-    GetPriceCurrencyImageExtern: function (productId) {
+    GetCurrencyImageExtern: function (productId) {
         var productIdString = UTF8ToString(productId);
         var product = products.find(p => p.id === productIdString);
         if (product) {
