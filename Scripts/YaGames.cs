@@ -5,6 +5,7 @@ using System;
 using YaGamesSDK;
 using Newtonsoft.Json;
 using System.Collections;
+using System.Globalization;
 
 public class YaGames : MonoBehaviour
 {
@@ -415,6 +416,31 @@ public class YaGames : MonoBehaviour
             else
             {
                 Debug.LogWarning($"[YandexSDK] Cannot (int) parse flag: {flag} -> {_flags[flag]}");
+                return defalutValue;
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[YandexSDK] Not exist flag: {flag}");
+            return defalutValue;
+        }
+#endif
+    }
+
+    public static float GetFlag(string flag, float defalutValue)
+    {
+#if UNITY_EDITOR
+        return defalutValue;
+#else
+        if (_flags.ContainsKey(flag))
+        {
+            if (float.TryParse(_flags[flag], NumberStyles.Any, CultureInfo.InvariantCulture, out float result))
+            {
+                return result;
+            }
+            else
+            {
+                Debug.LogWarning($"[YandexSDK] Cannot (float) parse flag: {flag} -> {_flags[flag]}");
                 return defalutValue;
             }
         }
