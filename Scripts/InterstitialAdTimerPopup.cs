@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using TMPro;
 using System;
+using YaGamesSDK.Components;
 
 namespace YaGamesSDK
 {
@@ -9,7 +9,7 @@ namespace YaGamesSDK
     {
         [SerializeField] private GameObject _previewPanel;
         [SerializeField] private GameObject _finishPanel;
-        [SerializeField] private TextMeshProUGUI _timerText;
+        [SerializeField] private LocalizationText _timerText;
 
         private bool _adClosed;
         private Action _closeAction;
@@ -31,10 +31,9 @@ namespace YaGamesSDK
 
         private IEnumerator TimerAnim(int time)
         {
-            var prefix = "Через ";
             while (time > 0)
             {
-                _timerText.text = prefix + time;
+                _timerText.SetArgument(time);
                 yield return new WaitForSecondsRealtime(1);
                 time--;
             }

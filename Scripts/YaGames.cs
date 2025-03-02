@@ -459,10 +459,10 @@ public class YaGames : MonoBehaviour
     [DllImport("__Internal")]
     private static extern string GetLanguageExtern();
 
-    public static string GetLanguage(string defaultLanguage = "ru")
+    public static string GetLanguage(string editorLanguage = "ru")
     {
 #if UNITY_EDITOR
-        return defaultLanguage;
+        return editorLanguage;
 #else
         return GetLanguageExtern();
 #endif
