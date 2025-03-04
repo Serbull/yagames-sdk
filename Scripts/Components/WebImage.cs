@@ -17,12 +17,29 @@ namespace YaGamesSDK.Components
         private Sprite _currentSprite;
         private string _lastUrl;
 
+        private void Start()
+        {
+            if (_targetImage == null)
+            {
+                Initiliaze();
+            }
+        }
+
+        private void Initiliaze()
+        {
+            _targetImage = GetComponent<Image>();
+            _defaultSprite = _targetImage.sprite;
+            if (_disableImageIfNotLoaded)
+            {
+                _targetImage.enabled = false;
+            }
+        }
+
         public void LoadImageFromURL(string url)
         {
             if (_targetImage == null)
             {
-                _targetImage = GetComponent<Image>();
-                _defaultSprite = _targetImage.sprite;
+                Initiliaze();
             }
 
             if (url == _lastUrl && _currentSprite != null)
@@ -37,7 +54,7 @@ namespace YaGamesSDK.Components
         {
             if (_disableImageIfNotLoaded)
             {
-                _targetImage.enabled = true;
+                _targetImage.enabled = false;
             }
             else
             {
