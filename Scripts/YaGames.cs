@@ -85,7 +85,7 @@ public class YaGames : MonoBehaviour
         {
             if (_currentInterstitialRepeatTimer > 0)
             {
-                _currentInterstitialRepeatTimer -= Time.deltaTime;
+                _currentInterstitialRepeatTimer -= Time.unscaledDeltaTime;
             }
             else
             {
