@@ -8,6 +8,8 @@ namespace YaGamesSDK.Components
     [RequireComponent(typeof(Image))]
     public class WebImage : MonoBehaviour
     {
+        [SerializeField] private bool _disableImageIfNotLoaded;
+
         private Sprite _defaultSprite;
 
         private Image _targetImage;
@@ -33,7 +35,14 @@ namespace YaGamesSDK.Components
 
         private IEnumerator DownloadImage(string url)
         {
-            _targetImage.sprite = _defaultSprite;
+            if (_disableImageIfNotLoaded)
+            {
+                _targetImage.enabled = true;
+            }
+            else
+            {
+                _targetImage.sprite = _defaultSprite;
+            }
 
             using UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
             yield return request.SendWebRequest();
@@ -54,6 +63,7 @@ namespace YaGamesSDK.Components
                 _currentSprite = Sprite.Create(_currentTexture, new Rect(0, 0, _currentTexture.width, _currentTexture.height), new Vector2(0.5f, 0.5f));
                 _lastUrl = url;
 
+                _targetImage.enabled = true;
                 _targetImage.sprite = _currentSprite;
             }
             else
