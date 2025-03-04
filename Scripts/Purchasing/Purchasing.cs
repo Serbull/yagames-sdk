@@ -46,7 +46,7 @@ namespace YaGamesSDK
         public static string GetCurrencyImage(string productId)
         {
 #if UNITY_EDITOR
-            return "-";
+            return "https://yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png";
 #else
             return GetCurrencyImageExtern(productId);
 #endif
