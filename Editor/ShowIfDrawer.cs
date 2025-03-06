@@ -1,9 +1,9 @@
-#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
+using YaGamesSDK.Core;
 
-namespace YaGamesSDK.Core.Editors
+namespace YaGamesSDK.Editor
 {
     [CustomPropertyDrawer(typeof(ShowIfAttribute))]
     public class ShowIfDrawer : PropertyDrawer
@@ -64,4 +64,3 @@ namespace YaGamesSDK.Core.Editors
         }
     }
 }
-#endif

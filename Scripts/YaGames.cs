@@ -397,6 +397,7 @@ public class YaGames : MonoBehaviour
         {
             var time = GetFlag(_settings.InterstitialRepeatFlag, _settings.InterstitialRepeatTime);
             _settings.InterstitialRepeatTime = time;
+            _currentInterstitialRepeatTimer = Mathf.Min(time, _currentInterstitialRepeatTimer);
             Log($"Change interstitial interval: {time}");
         }
 

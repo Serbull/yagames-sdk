@@ -1,11 +1,14 @@
 {
-    "name": "YaGamesSDK",
-    "rootNamespace": "YaGamesSDK",
+    "name": "YaGamesSDK.Editor",
+    "rootNamespace": "YaGamesSDK.Editor",
     "references": [
+        "YaGamesSDK",
         "Newtonsoft.Json",
         "Unity.TextMeshPro"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
