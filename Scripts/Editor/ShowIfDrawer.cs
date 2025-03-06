@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
@@ -63,3 +64,4 @@ namespace YaGamesSDK.Core.Editors
         }
     }
 }
+#endif
