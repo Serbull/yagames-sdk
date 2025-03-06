@@ -78,6 +78,20 @@ public class YaGames : MonoBehaviour
             _rewardedAdCallback = null;
         }
 
+        if (_workoutInterstitialHiding && _interstitialAdHidden)
+        {
+            _workoutInterstitialHiding = false;
+            _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
+            if (_interstitialAdTimerPopup != null)
+            {
+                _interstitialAdTimerPopup.AdClosed();
+            }
+            else
+            {
+                ContinueGameAfterAds();
+            }
+        }
+
         if (_settings.ShowInterstitialOnRepeat && _interstitialAdHidden && _rewardedAdHidden)
         {
             if (_currentInterstitialRepeatTimer > 0)
@@ -121,6 +135,7 @@ public class YaGames : MonoBehaviour
     private static InterstitialAdTimerPopup _interstitialAdTimerPopup;
     private static float _baseTimeScale;
     private static float _baseVolume;
+    private bool _workoutInterstitialHiding;
 
     [DllImport("__Internal")]
     private static extern void ShowInterstitialAdExtern();
@@ -233,15 +248,7 @@ public class YaGames : MonoBehaviour
     public void InterstitialAdClosed()
     {
         _interstitialAdHidden = true;
-        _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
-        if (_interstitialAdTimerPopup != null)
-        {
-            _interstitialAdTimerPopup.AdClosed();
-        }
-        else
-        {
-            ContinueGameAfterAds();
-        }
+        _workoutInterstitialHiding = true;
     }
 
     public void RewardedAdClosed()
