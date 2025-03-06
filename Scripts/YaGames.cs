@@ -6,6 +6,7 @@ using YaGamesSDK;
 using YaGamesSDK.Core;
 using Newtonsoft.Json;
 using System.Collections;
+using System.Globalization;
 
 public class YaGames : MonoBehaviour
 {
