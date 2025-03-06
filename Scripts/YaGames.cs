@@ -83,11 +83,11 @@ public class YaGames : MonoBehaviour
         {
             _workoutInterstitialHiding = false;
             _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
-            if (_interstitialAdTimerPopup != null)
-            {
-                _interstitialAdTimerPopup.AdClosed();
-            }
-            else
+            //if (_interstitialAdTimerPopup != null)
+            //{
+            //    _interstitialAdTimerPopup.AdClosed();
+            //}
+            //else
             {
                 ContinueGameAfterAds();
             }
