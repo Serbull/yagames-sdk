@@ -5,12 +5,12 @@ namespace YaGamesSDK
     public class DeviceInfo
     {
         private static string _deviceType;
-        private static bool _isDeviceTouchable;
+        private static bool _isTouch;
 
         [DllImport("__Internal")]
         private static extern string GetDeviceInfoExtern();
 
-        public static bool IsDeviceTouchable
+        public static bool IsTouch
         {
             get
             {
@@ -20,10 +20,10 @@ namespace YaGamesSDK
                 if (_deviceType == null)
                 {
                     _deviceType = GetDeviceInfoExtern();
-                    _isDeviceTouchable = _deviceType == "mobile" || _deviceType == "tablet";
+                    _isTouch = _deviceType == "mobile" || _deviceType == "tablet";
                 }
 
-                return _isDeviceTouchable;
+                return _isTouch;
 #endif
             }
         }
