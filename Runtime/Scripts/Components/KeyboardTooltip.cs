@@ -9,7 +9,7 @@ namespace YaGamesSDK.Components
 
         private void Start()
         {
-            if (YaGames.IsDeviceTouchable)
+            if (DeviceInfo.IsDeviceTouchable)
             {
                 gameObject.SetActive(false);
             }
