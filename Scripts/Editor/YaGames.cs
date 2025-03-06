@@ -12,25 +12,26 @@ namespace YaGamesSDK.Core.Editors
         [MenuItem("Window/YaGames Settings", false, 0)]
         private static void OpenSettings()
         {
-            Selection.activeObject = YaGamesSettings.Instance;
-            EditorGUIUtility.PingObject(YaGamesSettings.Instance);
+            //Selection.activeObject = YaGamesSettings.Instance;
+            //EditorGUIUtility.PingObject(YaGamesSettings.Instance);
         }
 
         public static YaGamesSettings CreateSettingsFile()
         {
-            var settings = ScriptableObject.CreateInstance<YaGamesSettings>();
+            //var settings = ScriptableObject.CreateInstance<YaGamesSettings>();
 
-            string directory = Path.GetDirectoryName(_assetPath);
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+            //string directory = Path.GetDirectoryName(_assetPath);
+            //if (!Directory.Exists(directory))
+            //{
+            //    Directory.CreateDirectory(directory);
+            //}
 
-            AssetDatabase.CreateAsset(settings, _assetPath);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            //AssetDatabase.CreateAsset(settings, _assetPath);
+            //AssetDatabase.SaveAssets();
+            //AssetDatabase.Refresh();
 
-            return settings;
+            //return settings;
+            return null;
         }
     }
 }
