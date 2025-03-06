@@ -14,7 +14,7 @@ namespace YaGamesSDK
         private bool _adClosed;
         private Action _closeAction;
 
-        public void Initialize(Action closeAction, int time = 3)
+        public void Initialize(Action closeAction, int time = 2)
         {
             _closeAction = closeAction;
             _previewPanel.SetActive(true);
