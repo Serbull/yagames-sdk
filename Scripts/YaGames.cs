@@ -26,7 +26,6 @@ public class YaGames : MonoBehaviour
     private readonly static CloudSaves _cloudSaves = new();
     private readonly static Purchasing _purchasing = new();
     private readonly static Leaderboards _leaderboards = new();
-    private static YaGamesSettings _settings;
 
     private void Awake()
     {
@@ -34,7 +33,6 @@ public class YaGames : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
-            _settings = YaGamesSettings.Instance;
         }
         else
         {
@@ -64,9 +62,9 @@ public class YaGames : MonoBehaviour
         LoadFlagsExtern();
 #endif
 
-        if (_settings.ShowInterstitialOnRepeat)
+        if (YaGamesSettings.Instance.ShowInterstitialOnRepeat)
         {
-            _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
+            _currentInterstitialRepeatTimer = YaGamesSettings.Instance.InterstitialRepeatTime;
         }
     }
 
@@ -82,7 +80,7 @@ public class YaGames : MonoBehaviour
         if (_workoutInterstitialHiding && _interstitialAdHidden)
         {
             _workoutInterstitialHiding = false;
-            _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
+            _currentInterstitialRepeatTimer = YaGamesSettings.Instance.InterstitialRepeatTime;
             if (_interstitialAdTimerPopup != null)
             {
                 _interstitialAdTimerPopup.AdClosed();
@@ -93,7 +91,7 @@ public class YaGames : MonoBehaviour
             }
         }
 
-        if (_settings.ShowInterstitialOnRepeat && _interstitialAdHidden && _rewardedAdHidden)
+        if (YaGamesSettings.Instance.ShowInterstitialOnRepeat && _interstitialAdHidden && _rewardedAdHidden)
         {
             if (_currentInterstitialRepeatTimer > 0)
             {
@@ -101,7 +99,7 @@ public class YaGames : MonoBehaviour
             }
             else
             {
-                _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
+                _currentInterstitialRepeatTimer = YaGamesSettings.Instance.InterstitialRepeatTime;
                 ShowInterstitialAdWithTimer();
             }
         }
@@ -393,10 +391,10 @@ public class YaGames : MonoBehaviour
         Debug.Log($"[YandexSDK] Flags loaded: {flags}");
         _flags = JsonConvert.DeserializeObject<Dictionary<string, string>>(flags);
 
-        if (HasFlag(_settings.InterstitialRepeatFlag))
+        if (HasFlag(YaGamesSettings.Instance.InterstitialRepeatFlag))
         {
-            var time = GetFlag(_settings.InterstitialRepeatFlag, _settings.InterstitialRepeatTime);
-            _settings.InterstitialRepeatTime = time;
+            var time = GetFlag(YaGamesSettings.Instance.InterstitialRepeatFlag, YaGamesSettings.Instance.InterstitialRepeatTime);
+            YaGamesSettings.Instance.InterstitialRepeatTime = time;
             _currentInterstitialRepeatTimer = Mathf.Min(time, _currentInterstitialRepeatTimer);
             Log($"Change interstitial interval: {time}");
         }
@@ -478,7 +476,7 @@ public class YaGames : MonoBehaviour
     public static string GetLanguage()
     {
 #if UNITY_EDITOR
-        return _settings.EditorDefaultLanguage;
+        return YaGamesSettings.Instance.EditorDefaultLanguage;
 #else
         return GetLanguageExtern();
 #endif
