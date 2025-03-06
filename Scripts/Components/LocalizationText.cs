@@ -36,7 +36,7 @@ namespace YaGamesSDK.Components
 
         private string GetText()
         {
-            var lang = YaGames.GetLanguage("en");
+            var lang = YaGames.GetLanguage();
             if (lang == "ru")
             {
                 return _textRu;

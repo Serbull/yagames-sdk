@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using System;
 using YaGamesSDK;
+using YaGamesSDK.Core;
 using Newtonsoft.Json;
 using System.Collections;
-using System.Globalization;
 
 public class YaGames : MonoBehaviour
 {
@@ -19,15 +19,13 @@ public class YaGames : MonoBehaviour
     [SerializeField] private bool _restorePurchasesOnStart = false;
     [Space]
     [SerializeField] private bool _sendGameReadyOnStart = true;
-    [Space]
-    [SerializeField] private bool _showInterstitialOnRepeat;
-    [SerializeField] private float _interstialRepeatTimer = 60;
 
     private float _currentInterstitialRepeatTimer;
 
     private readonly static CloudSaves _cloudSaves = new();
     private readonly static Purchasing _purchasing = new();
     private readonly static Leaderboards _leaderboards = new();
+    private static YaGamesSettings _settings;
 
     private void Awake()
     {
@@ -35,6 +33,7 @@ public class YaGames : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
+            _settings = YaGamesSettings.Instance;
         }
         else
         {
@@ -59,16 +58,14 @@ public class YaGames : MonoBehaviour
             SendGameReady();
         }
 
-
-
 #if !UNITY_EDITOR
         CheckCanReviewExtern();
         LoadFlagsExtern();
 #endif
 
-        if (_showInterstitialOnRepeat)
+        if (_settings.ShowInterstitialOnRepeat)
         {
-            _currentInterstitialRepeatTimer = _interstialRepeatTimer;
+            _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
         }
     }
 
@@ -81,7 +78,7 @@ public class YaGames : MonoBehaviour
             _rewardedAdCallback = null;
         }
 
-        if (_showInterstitialOnRepeat && _interstitialAdHidden && _rewardedAdHidden)
+        if (_settings.ShowInterstitialOnRepeat && _interstitialAdHidden && _rewardedAdHidden)
         {
             if (_currentInterstitialRepeatTimer > 0)
             {
@@ -89,7 +86,7 @@ public class YaGames : MonoBehaviour
             }
             else
             {
-                _currentInterstitialRepeatTimer = _interstialRepeatTimer;
+                _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
                 ShowInterstitialAdWithTimer();
             }
         }
@@ -236,7 +233,7 @@ public class YaGames : MonoBehaviour
     public void InterstitialAdClosed()
     {
         _interstitialAdHidden = true;
-        _currentInterstitialRepeatTimer = _interstialRepeatTimer;
+        _currentInterstitialRepeatTimer = _settings.InterstitialRepeatTime;
         if (_interstitialAdTimerPopup != null)
         {
             _interstitialAdTimerPopup.AdClosed();
@@ -388,18 +385,28 @@ public class YaGames : MonoBehaviour
         Debug.Log($"[YandexSDK] Flags loaded: {flags}");
         _flags = JsonConvert.DeserializeObject<Dictionary<string, string>>(flags);
 
-        foreach (var item in _flags)
+        if (HasFlag(_settings.InterstitialRepeatFlag))
         {
-            if (item.Key == "interstitialInterval")
-            {
-                _interstialRepeatTimer = int.Parse(item.Value);
-                _currentInterstitialRepeatTimer = _interstialRepeatTimer;
-                Debug.Log($"[YandexSDK] Change interstitial interval: {_interstialRepeatTimer}");
-            }
+            var time = GetFlag(_settings.InterstitialRepeatFlag, _settings.InterstitialRepeatTime);
+            _settings.InterstitialRepeatTime = time;
+            Log($"Change interstitial interval: {time}");
         }
 
         IsFlagsLoaded = true;
         OnFlagsLoaded?.Invoke();
+    }
+
+    public static bool HasFlag(string flag)
+    {
+        foreach (var item in _flags)
+        {
+            if (item.Key == flag)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static int GetFlag(string flag, int defalutValue)
@@ -459,10 +466,10 @@ public class YaGames : MonoBehaviour
     [DllImport("__Internal")]
     private static extern string GetLanguageExtern();
 
-    public static string GetLanguage(string editorLanguage = "ru")
+    public static string GetLanguage()
     {
 #if UNITY_EDITOR
-        return editorLanguage;
+        return _settings.EditorDefaultLanguage;
 #else
         return GetLanguageExtern();
 #endif

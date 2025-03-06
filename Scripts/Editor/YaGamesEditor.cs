@@ -1,33 +1,35 @@
-#if UNITY_EDITOR
-using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
+using UnityEngine;
 
-namespace YaGamesSDK
+namespace YaGamesSDK.Core.Editors
 {
-    [CustomEditor(typeof(YaGames))]
-    public class YaGamesEditor : Editor
+    public static class YaGamesEditor
     {
-        private SerializedProperty _showInterstitialOnRepeat;
+        private static readonly string _assetPath = $"Assets/Resources/YaGamesSettings.asset";
 
-        private void OnEnable()
+        [MenuItem("Window/YaGames Settings", false, 0)]
+        private static void OpenSettings()
         {
-            _showInterstitialOnRepeat = serializedObject.FindProperty("_showInterstitialOnRepeat");
+            Selection.activeObject = YaGamesSettings.Instance;
+            EditorGUIUtility.PingObject(YaGamesSettings.Instance);
         }
 
-
-        public override void OnInspectorGUI()
+        public static YaGamesSettings CreateSettingsFile()
         {
-            serializedObject.Update();
+            var settings = ScriptableObject.CreateInstance<YaGamesSettings>();
 
-            var exclude = new List<string>();
-            if (!_showInterstitialOnRepeat.boolValue)
+            string directory = Path.GetDirectoryName(_assetPath);
+            if (!Directory.Exists(directory))
             {
-                exclude.Add("_interstialRepeatTimer");
+                Directory.CreateDirectory(directory);
             }
 
-            DrawPropertiesExcluding(serializedObject, exclude.ToArray());
-            serializedObject.ApplyModifiedProperties();
+            AssetDatabase.CreateAsset(settings, _assetPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            return settings;
         }
     }
 }
-#endif
