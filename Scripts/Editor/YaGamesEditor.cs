@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace YaGamesSDK.Core.Editors
 {
-    public static class YaGames
+    public static class YaGamesEditor
     {
         private static readonly string _assetPath = $"Assets/Resources/YaGamesSettings.asset";
 
