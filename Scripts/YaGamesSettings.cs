@@ -16,7 +16,7 @@ namespace YaGamesSDK.Core
 #if UNITY_EDITOR
                     if (_instance == null)
                     {
-                        _instance = Editors.YaGamesEditor.CreateSettingsFile();
+                        _instance = Editors.YaGames.CreateSettingsFile();
                     }
 #endif
                 }
