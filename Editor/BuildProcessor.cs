@@ -20,18 +20,17 @@ namespace YaGamesSDK.Editor
 
         public void OnPostprocessBuild(BuildReport report)
         {
-            YaGames.Log("Result " + report.summary.result);
-            if (report.summary.result == BuildResult.Succeeded)
-            {
-                YaGames.Log($"Build version: {YaGamesSettings.Instance.BuildVersion}");
-            }
-            else
+            if (report.summary.result == BuildResult.Cancelled || report.summary.result == BuildResult.Failed)
             {
                 var settings = YaGamesSettings.Instance;
                 settings.BuildVersion--;
 
                 EditorUtility.SetDirty(settings);
                 AssetDatabase.SaveAssetIfDirty(settings);
+            }
+            else
+            {
+                YaGames.Log($"Build version: {YaGamesSettings.Instance.BuildVersion}");
             }
         }
     }
