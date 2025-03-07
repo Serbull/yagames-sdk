@@ -67,7 +67,9 @@ public class YaGames : MonoBehaviour
             _currentInterstitialRepeatTimer = YaGamesSettings.Instance.InterstitialRepeatTime;
         }
 
+#if !UNITY_EDITOR
         Log($"Build version: {YaGamesSettings.Instance.BuildVersion}");
+#endif
     }
 
     private void Update()
