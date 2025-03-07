@@ -13,11 +13,25 @@ namespace YaGamesSDK.Editor
         {
             var settings = YaGamesSettings.Instance;
             settings.BuildVersion++;
+
             EditorUtility.SetDirty(settings);
             AssetDatabase.SaveAssetIfDirty(settings);
-            YaGames.Log($"Build version: {settings.BuildVersion}");
         }
 
-        public void OnPostprocessBuild(BuildReport report) { }
+        public void OnPostprocessBuild(BuildReport report)
+        {
+            if (report.summary.result == BuildResult.Succeeded)
+            {
+                YaGames.Log($"Build version: {YaGamesSettings.Instance.BuildVersion}");
+            }
+            else
+            {
+                var settings = YaGamesSettings.Instance;
+                settings.BuildVersion--;
+
+                EditorUtility.SetDirty(settings);
+                AssetDatabase.SaveAssetIfDirty(settings);
+            }
+        }
     }
 }
