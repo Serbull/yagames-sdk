@@ -1,6 +1,7 @@
-using System;
+using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using YaGamesSDK.Core;
 
 namespace YaGamesSDK.Editor
 {
@@ -8,14 +9,15 @@ namespace YaGamesSDK.Editor
     {
         public int callbackOrder => 0;
 
-        public void OnPreprocessBuild(BuildReport report) { }
-
-        public void OnPostprocessBuild(BuildReport report)
+        public void OnPreprocessBuild(BuildReport report)
         {
-            string buildTime = DateTime.Now.ToString("yyMMdd/HHmm");
-
-            Core.YaGamesSettings.Instance.BuildTime = buildTime;
-            YaGames.Log($"Build time: {buildTime}");
+            var settings = YaGamesSettings.Instance;
+            settings.BuildVersion++;
+            EditorUtility.SetDirty(settings);
+            AssetDatabase.SaveAssetIfDirty(settings);
+            YaGames.Log($"Build version: {settings.BuildVersion}");
         }
+
+        public void OnPostprocessBuild(BuildReport report) { }
     }
 }

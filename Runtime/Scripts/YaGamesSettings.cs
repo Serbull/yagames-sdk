@@ -29,9 +29,7 @@ namespace YaGamesSDK.Core
         [Header("Localization")]
         public string EditorDefaultLanguage = "en";
 
-        [Header("Debug")]
-        public bool ShowBuildTime = true;
-        [HideInInspector]
-        public string BuildTime;
+        [Header("Other")]
+        public int BuildVersion;
     }
 }
