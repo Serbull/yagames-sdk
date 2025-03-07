@@ -1,13 +1,22 @@
-#if UNITY_EDITOR
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using YaGamesSDK.Core;
 
-namespace YaGamesSDK.Core
+namespace YaGamesSDK.Editor
 {
-    public static class YaGamesUtils
+    [InitializeOnLoad]
+    public static class YaGamesSettingsEditor
     {
         private static readonly string _assetPath = $"Assets/Resources/YaGamesSettings.asset";
+
+        static YaGamesSettingsEditor()
+        {
+            if (Resources.Load<YaGamesSettings>("YaGamesSettings") == null)
+            {
+                CreateSettingsFile();
+            }
+        }
 
         [MenuItem("Window/YaGames Settings", false, 0)]
         private static void OpenSettings()
@@ -16,7 +25,7 @@ namespace YaGamesSDK.Core
             EditorGUIUtility.PingObject(YaGamesSettings.Instance);
         }
 
-        public static YaGamesSettings CreateSettingsFile()
+        private static void CreateSettingsFile()
         {
             var settings = ScriptableObject.CreateInstance<YaGamesSettings>();
 
@@ -29,9 +38,6 @@ namespace YaGamesSDK.Core
             AssetDatabase.CreateAsset(settings, _assetPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-
-            return settings;
         }
     }
 }
-#endif

@@ -13,12 +13,6 @@ namespace YaGamesSDK.Core
                 if (_instance == null)
                 {
                     _instance = Resources.Load<YaGamesSettings>("YaGamesSettings");
-#if UNITY_EDITOR
-                    if (_instance == null)
-                    {
-                        _instance = YaGamesUtils.CreateSettingsFile();
-                    }
-#endif
                 }
 
                 return _instance;
