@@ -66,6 +66,11 @@ public class YaGames : MonoBehaviour
         {
             _currentInterstitialRepeatTimer = YaGamesSettings.Instance.InterstitialRepeatTime;
         }
+
+        if (YaGamesSettings.Instance.ShowBuildTime)
+        {
+            gameObject.AddComponent<BuildTimeShower>();
+        }
     }
 
     private void Update()

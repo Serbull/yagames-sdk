@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace YaGamesSDK
 {
-    public class DeviceInfo
+    public class Device
     {
         private static string _deviceType;
         private static bool _isTouch;

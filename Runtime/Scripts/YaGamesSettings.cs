@@ -31,8 +31,13 @@ namespace YaGamesSDK.Core
         public float InterstitialRepeatTime = 60;
         [ShowIf(nameof(ShowInterstitialOnRepeat))]
         public string InterstitialRepeatFlag = "interstitialInterval";
+
         [Header("Localization")]
         public string EditorDefaultLanguage = "en";
 
+        [Header("Debug")]
+        public bool ShowBuildTime = true;
+        [HideInInspector]
+        public string BuildTime;
     }
 }
