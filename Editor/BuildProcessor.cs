@@ -20,6 +20,7 @@ namespace YaGamesSDK.Editor
 
         public void OnPostprocessBuild(BuildReport report)
         {
+            YaGames.Log("Result " + report.summary.result);
             if (report.summary.result == BuildResult.Succeeded)
             {
                 YaGames.Log($"Build version: {YaGamesSettings.Instance.BuildVersion}");
