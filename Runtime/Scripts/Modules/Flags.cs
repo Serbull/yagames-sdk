@@ -26,6 +26,18 @@ namespace YaGamesSDK
             OnLoaded?.Invoke();
         }
 
+        public static void Load()
+        {
+            if (IsLoaded) return;
+
+#if UNITY_EDITOR
+            IsLoaded = true;
+            OnLoaded?.Invoke();
+#else
+            LoadFlagsExtern();
+#endif
+        }
+
         public static bool HasFlag(string flag)
         {
             return _flags.ContainsKey(flag);

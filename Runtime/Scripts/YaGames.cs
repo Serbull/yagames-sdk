@@ -60,8 +60,8 @@ public class YaGames : MonoBehaviour
 
 #if !UNITY_EDITOR
         CheckCanReviewExtern();
-        LoadFlagsExtern();
 #endif
+        Flags.Load();
 
         if (YaGamesSettings.Instance.ShowInterstitialOnRepeat)
         {
