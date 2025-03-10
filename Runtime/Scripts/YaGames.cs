@@ -26,6 +26,7 @@ public class YaGames : MonoBehaviour
     private readonly static CloudSaves _cloudSaves = new();
     private readonly static Purchasing _purchasing = new();
     private readonly static Leaderboards _leaderboards = new();
+    private readonly static Flags _flags = new();
 
     private void Awake()
     {
@@ -70,6 +71,14 @@ public class YaGames : MonoBehaviour
 #if !UNITY_EDITOR
         Log($"Build version: {YaGamesSettings.Instance.BuildVersion}");
 #endif
+
+        Flags.OnLoaded += Flags_OnLoaded;
+        Flags_OnLoaded();
+    }
+
+    private void OnDestroy()
+    {
+        Flags.OnLoaded -= Flags_OnLoaded;
     }
 
     private void Update()
@@ -105,6 +114,20 @@ public class YaGames : MonoBehaviour
             {
                 _currentInterstitialRepeatTimer = YaGamesSettings.Instance.InterstitialRepeatTime;
                 ShowInterstitialAdWithTimer();
+            }
+        }
+    }
+
+    private void Flags_OnLoaded()
+    {
+        if (Flags.IsLoaded)
+        {
+            if (Flags.HasFlag(YaGamesSettings.Instance.InterstitialRepeatFlag))
+            {
+                var time = Flags.GetFlag(YaGamesSettings.Instance.InterstitialRepeatFlag, YaGamesSettings.Instance.InterstitialRepeatTime);
+                YaGamesSettings.Instance.InterstitialRepeatTime = time;
+                _currentInterstitialRepeatTimer = Mathf.Min(time, _currentInterstitialRepeatTimer);
+                Log($"Change interstitial interval: {time}");
             }
         }
     }
@@ -286,6 +309,13 @@ public class YaGames : MonoBehaviour
         _cloudSaves.DataLoaded(data);
     }
 
+    //FLAGS
+
+    public void FlagsLoaded(string flags)
+    {
+        _flags.FlagsLoaded(flags);
+    }
+
     //PURCHASING
 
     public void PurchasingPurchaseSuccessful(object productIdString)
@@ -379,97 +409,6 @@ public class YaGames : MonoBehaviour
         OnReviewFinish?.Invoke(false);
         ReviewNotAvailable("already requested");
     }
-    #endregion
-
-    #region Flags
-
-    private static Dictionary<string, string> _flags = new();
-    public static bool IsFlagsLoaded { get; private set; }
-    public static event Action OnFlagsLoaded;
-
-    [DllImport("__Internal")]
-    private static extern string LoadFlagsExtern();
-
-    public void FlagsLoaded(string flags) //from lib
-    {
-        Debug.Log($"[YandexSDK] Flags loaded: {flags}");
-        _flags = JsonConvert.DeserializeObject<Dictionary<string, string>>(flags);
-
-        if (HasFlag(YaGamesSettings.Instance.InterstitialRepeatFlag))
-        {
-            var time = GetFlag(YaGamesSettings.Instance.InterstitialRepeatFlag, YaGamesSettings.Instance.InterstitialRepeatTime);
-            YaGamesSettings.Instance.InterstitialRepeatTime = time;
-            _currentInterstitialRepeatTimer = Mathf.Min(time, _currentInterstitialRepeatTimer);
-            Log($"Change interstitial interval: {time}");
-        }
-
-        IsFlagsLoaded = true;
-        OnFlagsLoaded?.Invoke();
-    }
-
-    public static bool HasFlag(string flag)
-    {
-        foreach (var item in _flags)
-        {
-            if (item.Key == flag)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static int GetFlag(string flag, int defalutValue)
-    {
-#if UNITY_EDITOR
-        return defalutValue;
-#else
-        if (_flags.ContainsKey(flag))
-        {
-            if (int.TryParse(_flags[flag], out int result))
-            {
-                return result;
-            }
-            else
-            {
-                Debug.LogWarning($"[YandexSDK] Cannot (int) parse flag: {flag} -> {_flags[flag]}");
-                return defalutValue;
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"[YandexSDK] Not exist flag: {flag}");
-            return defalutValue;
-        }
-#endif
-    }
-
-    public static float GetFlag(string flag, float defalutValue)
-    {
-#if UNITY_EDITOR
-        return defalutValue;
-#else
-        if (_flags.ContainsKey(flag))
-        {
-            if (float.TryParse(_flags[flag], NumberStyles.Any, CultureInfo.InvariantCulture, out float result))
-            {
-                return result;
-            }
-            else
-            {
-                Debug.LogWarning($"[YandexSDK] Cannot (float) parse flag: {flag} -> {_flags[flag]}");
-                return defalutValue;
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"[YandexSDK] Not exist flag: {flag}");
-            return defalutValue;
-        }
-#endif
-    }
-
     #endregion
 
     #region Language
