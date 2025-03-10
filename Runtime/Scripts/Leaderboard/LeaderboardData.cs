@@ -17,6 +17,7 @@ namespace YaGamesSDK
 
             public int rank;
             public int score;
+            public string formattedScore;
             public Player player;
             public string avatarUrl;
             public string extraData;
