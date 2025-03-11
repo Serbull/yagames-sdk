@@ -1,4 +1,5 @@
 using System.IO;
+using System.IO.Compression;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -40,9 +41,15 @@ namespace YaGamesSDK.Editor
             else
             {
                 YaGames.Log($"Build version: {YaGamesSettings.Instance.BuildVersion}");
+
                 if (settings.ReplaceIndexHtml)
                 {
                     ReplaceIndexHtml(report.summary.outputPath, Application.productName);
+                }
+
+                if (settings.ArchiveBuild)
+                {
+                    ArchiveBuildFolder(report.summary.outputPath);
                 }
             }
         }
@@ -75,6 +82,20 @@ namespace YaGamesSDK.Editor
             File.WriteAllText(targetIndexPath, fileContent);
 
             YaGames.Log("Custom index.html successfully copied to build folder.");
+        }
+
+        private void ArchiveBuildFolder(string buildPath)
+        {
+            string zipPath = buildPath.TrimEnd(Path.DirectorySeparatorChar) + ".zip";
+
+            if (File.Exists(zipPath))
+            {
+                File.Delete(zipPath);
+                YaGames.Log("Old archive deleted.");
+            }
+
+            ZipFile.CreateFromDirectory(buildPath, zipPath);
+            YaGames.Log($"Build folder archived: {zipPath}");
         }
     }
 }
