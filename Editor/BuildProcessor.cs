@@ -57,7 +57,7 @@ namespace YaGamesSDK.Editor
         private void ReplaceIndexHtml(string buildPath, string productName)
         {
             string targetIndexPath = Path.Combine(buildPath, "index.html");
-            var indexFile = Resources.Load<TextAsset>("index");
+            var indexFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Packages/com.serbull.yagames-sdk/Editor/Resources/index.html");
 
             if (indexFile == null)
             {
