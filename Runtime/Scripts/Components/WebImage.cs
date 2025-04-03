@@ -16,6 +16,9 @@ namespace YaGamesSDK.Components
         private Texture2D _currentTexture;
         private Sprite _currentSprite;
         private string _lastUrl;
+        private bool _isLoaded;
+
+        public bool IsLoaded => _isLoaded;
 
         private void Start()
         {
@@ -52,6 +55,8 @@ namespace YaGamesSDK.Components
 
         private IEnumerator DownloadImage(string url)
         {
+            _isLoaded = false;
+
             if (_disableImageIfNotLoaded)
             {
                 _targetImage.enabled = false;
@@ -82,6 +87,7 @@ namespace YaGamesSDK.Components
 
                 _targetImage.enabled = true;
                 _targetImage.sprite = _currentSprite;
+                _isLoaded = true;
             }
             else
             {

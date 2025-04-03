@@ -23,6 +23,8 @@ namespace YaGamesSDK.Components
         [SerializeField] private UnityEvent _onPurchaseSuccessful;
         [SerializeField] private UnityEvent _onPurchaseFailed;
 
+        public string ProductId => _productId;
+
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(Purchase);
@@ -31,15 +33,15 @@ namespace YaGamesSDK.Components
             {
                 _priceText.text = Purchasing.GetProductPrice(_productId);
             }
-
-            if (_currencyImage != null)
-            {
-                _currencyImage.LoadImageFromURL(Purchasing.GetCurrencyImage(_productId));
-            }
         }
 
         private void OnEnable()
         {
+            if (_currencyImage != null && !_currencyImage.IsLoaded)
+            {
+                _currencyImage.LoadImageFromURL(Purchasing.GetCurrencyImage(_productId));
+            }
+
             Purchasing.OnPurchaseSuccessful += Purchasing_OnPurchaseSuccessful;
             Purchasing.OnPurchaseFailed += Purchasing_OnPurchaseFailed;
         }
