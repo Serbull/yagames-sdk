@@ -13,7 +13,7 @@ namespace YaGamesSDK
         public struct PlayerData
         {
             public string name;
-            public string uniqueID;
+            public string id;
         }
 
         public static PlayerData GetPlayerData()
