@@ -5,18 +5,18 @@ mergeInto(LibraryManager.library, {
         ysdk.features.LoadingAPI.ready();
     },
 
-    ShowInterstitialAdExtern: function ()    {
+    ShowInterstitialAdExtern: function () {
         ysdk.adv.showFullscreenAdv({
             callbacks: {
                 onOpen: () => {
                     console.log('[YaGamesLib] Interstitial ad open.');
                     myGameInstance.SendMessage('YaGames', 'InterstitialAdOpened');
                 },
-                onClose: function(wasShown) {
-		            console.log('[YaGamesLib] Interstitial ad shown.');
+                onClose: function (wasShown) {
+                    console.log('[YaGamesLib] Interstitial ad shown.');
                     myGameInstance.SendMessage('YaGames', 'InterstitialAdClosed');
                 },
-                onError: function(error) {
+                onError: function (error) {
                     console.log('[YaGamesLib] Error while open interstitial ad:', error);
                 }
             }
@@ -37,7 +37,7 @@ mergeInto(LibraryManager.library, {
                 onClose: () => {
                     console.log('[YaGamesLib] Video ad closed.');
                     myGameInstance.SendMessage('YaGames', 'RewardedAdClosed');
-                }, 
+                },
                 onError: (e) => {
                     console.log('[YaGamesLib] Error while open video ad:', e);
                     myGameInstance.SendMessage('YaGames', 'RewardedAdNotReady');
@@ -58,36 +58,36 @@ mergeInto(LibraryManager.library, {
         var nameString = UTF8ToString(name);
         var extraDataString = UTF8ToString(extraData);
         ysdk.isAvailableMethod('leaderboards.setLeaderboardScore')
-        .then(function (isAvailable) {
-            if (isAvailable) {
-                lb.setLeaderboardScore(nameString, score, extraDataString);
-                console.log('Successful add score to leaderboard');
-            } else {
-                console.log('Cannot set leaderboard score!');
-            }
-        })
-        .catch(function (error) {
-            console.error('Get available leaderboard return error: ', error);
-        })
+            .then(function (isAvailable) {
+                if (isAvailable) {
+                    lb.setLeaderboardScore(nameString, score, extraDataString);
+                    console.log('Successful add score to leaderboard');
+                } else {
+                    console.log('Cannot set leaderboard score!');
+                }
+            })
+            .catch(function (error) {
+                console.error('Get available leaderboard return error: ', error);
+            })
     },
 
     LoadLeaderboardExtern: function (name, includeUser, quantityAround, quantityTop) {
         var nameString = UTF8ToString(name);
         ysdk.getLeaderboards()
-        .then(lb => {
-            lb.getLeaderboardEntries(nameString, { quantityTop: quantityTop, includeUser: includeUser, quantityAround: quantityAround })
-            .then(res => {
+            .then(lb => {
+                lb.getLeaderboardEntries(nameString, { quantityTop: quantityTop, includeUser: includeUser, quantityAround: quantityAround })
+                    .then(res => {
 
-                res.entries = res.entries.map(entry => ({
-                    ...entry,
-                    avatarUrl: entry.player.getAvatarSrc('small')
-                }));
+                        res.entries = res.entries.map(entry => ({
+                            ...entry,
+                            avatarUrl: entry.player.getAvatarSrc('small')
+                        }));
 
-                const myJson = JSON.stringify(res);
-                console.log('[YaGamesLib] Leaderboard loaded:', myJson);
-                myGameInstance.SendMessage('YaGames', 'LeaderboardLoaded', myJson);
+                        const myJson = JSON.stringify(res);
+                        console.log('[YaGamesLib] Leaderboard loaded:', myJson);
+                        myGameInstance.SendMessage('YaGames', 'LeaderboardLoaded', myJson);
+                    });
             });
-        });
     },
 
     GetLanguageExtern: function () {
@@ -109,66 +109,66 @@ mergeInto(LibraryManager.library, {
 
     CheckCanReviewExtern: function () {
         ysdk.feedback.canReview()
-        .then(({ value, reason }) => {
-            if (value) {
-                console.log('Review is available');
-                myGameInstance.SendMessage('YaGames', 'ReviewAvailable');
-            } else {
-                console.log('Review not available: ', reason);
-                myGameInstance.SendMessage('YaGames', 'ReviewNotAvailable', reason);
-            }
-        })
+            .then(({ value, reason }) => {
+                if (value) {
+                    console.log('Review is available');
+                    myGameInstance.SendMessage('YaGames', 'ReviewAvailable');
+                } else {
+                    console.log('Review not available: ', reason);
+                    myGameInstance.SendMessage('YaGames', 'ReviewNotAvailable', reason);
+                }
+            })
     },
 
     ShowReviewExtern: function () {
         ysdk.feedback.canReview()
-        .then(({ value, reason }) => {
-            if (value) {
-                ysdk.feedback.requestReview()
-                    .then(({ feedbackSent }) => {
-                        console.log(feedbackSent);
-                        if(feedbackSent) myGameInstance.SendMessage('YaGames', 'ReviewFinishSuccessful');
-                        else myGameInstance.SendMessage('YaGames', 'ReviewFinishCancel');
-                    })
-            } else {
-                console.log('Review cancelled: ', reason);
-                myGameInstance.SendMessage('YaGames', 'ReviewFinishCancel');
-            }
-        })
+            .then(({ value, reason }) => {
+                if (value) {
+                    ysdk.feedback.requestReview()
+                        .then(({ feedbackSent }) => {
+                            console.log(feedbackSent);
+                            if (feedbackSent) myGameInstance.SendMessage('YaGames', 'ReviewFinishSuccessful');
+                            else myGameInstance.SendMessage('YaGames', 'ReviewFinishCancel');
+                        })
+                } else {
+                    console.log('Review cancelled: ', reason);
+                    myGameInstance.SendMessage('YaGames', 'ReviewFinishCancel');
+                }
+            })
     },
 
     RestorePurchasesExtern: function () {
         console.log('Restore purchases');
         payments.getPurchases()
-        .then(purchases => {
-            purchases.forEach((purchase) => {
-                console.log('Restore: ', purchase.productID);
-                myGameInstance.SendMessage('YaGames', 'PurchasingProductRestored', purchase.productID);
-            });
-            console.log('Purchases restored successful');
-            myGameInstance.SendMessage('YaGames', 'PurchasingAllProductsRestored');
-        }).catch(err => {
-            console.log('Purchases restored with error: ', err);
-            myGameInstance.SendMessage('YaGames', 'PurchasingAllProductsRestored');
-            // Выбрасывает исключение USER_NOT_AUTHORIZED для неавторизованных пользователей.
-        })
+            .then(purchases => {
+                purchases.forEach((purchase) => {
+                    console.log('Restore: ', purchase.productID);
+                    myGameInstance.SendMessage('YaGames', 'PurchasingProductRestored', purchase.productID);
+                });
+                console.log('Purchases restored successful');
+                myGameInstance.SendMessage('YaGames', 'PurchasingAllProductsRestored');
+            }).catch(err => {
+                console.log('Purchases restored with error: ', err);
+                myGameInstance.SendMessage('YaGames', 'PurchasingAllProductsRestored');
+                // Выбрасывает исключение USER_NOT_AUTHORIZED для неавторизованных пользователей.
+            })
     },
 
     PurchaseExtern: function (productId) {
         var productIdString = UTF8ToString(productId);
         console.log('Purchase: ', productIdString);
         payments.purchase({ id: productIdString })
-        .then(purchase => {
-            console.log('Purchase successful: ', productIdString);
-            myGameInstance.SendMessage('YaGames', 'PurchasingPurchaseSuccessful', productIdString);
-            // Покупка успешно совершена!
-        }).catch(err => {
-            console.log('Purchase failed: ', productIdString);
-            myGameInstance.SendMessage('YaGames', 'PurchasingPurchaseFailed', productIdString);
-            // Покупка не удалась: в консоли разработчика не добавлен товар с таким id,
-            // пользователь не авторизовался, передумал и закрыл окно оплаты,
-            // истекло отведенное на покупку время, не хватило денег и т. д.
-        })
+            .then(purchase => {
+                console.log('Purchase successful: ', productIdString);
+                myGameInstance.SendMessage('YaGames', 'PurchasingPurchaseSuccessful', productIdString);
+                // Покупка успешно совершена!
+            }).catch(err => {
+                console.log('Purchase failed: ', productIdString);
+                myGameInstance.SendMessage('YaGames', 'PurchasingPurchaseFailed', productIdString);
+                // Покупка не удалась: в консоли разработчика не добавлен товар с таким id,
+                // пользователь не авторизовался, передумал и закрыл окно оплаты,
+                // истекло отведенное на покупку время, не хватило денег и т. д.
+            })
     },
 
     ConsumePurchaseExtern: function (productId) {
@@ -213,7 +213,7 @@ mergeInto(LibraryManager.library, {
             return 0;
         }
     },
-    
+
     SaveGameExtern: function (data) {
         var dataString = UTF8ToString(data);
         var myobj = JSON.parse(dataString);
@@ -221,7 +221,7 @@ mergeInto(LibraryManager.library, {
     },
 
     LoadGameExtern: function () {
-        if(player == null) {
+        if (player == null) {
             console.log('[YaGamesLib] Player is null: return null save data');
             myGameInstance.SendMessage('YaGames', 'CloudSavesLoaded', null);
             return;
@@ -239,6 +239,16 @@ mergeInto(LibraryManager.library, {
             const myJson = JSON.stringify(flags);
             console.log('[YaGamesLib] Flags loaded:', myJson);
             myGameInstance.SendMessage('YaGames', 'FlagsLoaded', myJson);
+        });
+    },
+
+    GetPlayerInfoExtern: function () {
+        const name = player ? player.getName() : null;
+        const id = player ? player.getUniqueID() : null;
+
+        return JSON.stringify({
+            name: name,
+            id: id
         });
     },
 });
