@@ -244,9 +244,7 @@ mergeInto(LibraryManager.library, {
 
     GetPlayerInfoExtern: function () {
         const name = player ? player.getName() : null;
-        console.log(name);
         const id = player ? player.getUniqueID() : null;
-        console.log(id);
         const json = JSON.stringify({
             name: name,
             id: id

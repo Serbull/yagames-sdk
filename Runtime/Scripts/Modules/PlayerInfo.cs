@@ -22,6 +22,7 @@ namespace YaGamesSDK
             return new PlayerData();
 #else
             var json = GetPlayerInfoExtern();
+            Debug.Log(json);
             return JsonConvert.DeserializeObject<PlayerData>(json);
 #endif
         }
