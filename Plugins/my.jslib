@@ -1,12 +1,12 @@
 
-function StringToUTF8Buffer(str) {
-    var bufferSize = lengthBytesUTF8(str) + 1;
-    var buffer = _malloc(bufferSize);
-    stringToUTF8(str, buffer, bufferSize);
-    return buffer;
-}
-
 mergeInto(LibraryManager.library, {
+
+    StringToUTF8Buffer: function (str) {
+        var bufferSize = lengthBytesUTF8(str) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(str, buffer, bufferSize);
+        return buffer;
+    },
 
     SendGameReadyExtern: function () {
         console.log('[YaGamesLib] Game Ready');
@@ -101,13 +101,13 @@ mergeInto(LibraryManager.library, {
     GetLanguageExtern: function () {
         const language = ysdk.environment.i18n.lang;
         console.log('[YaGamesLib] Language:', language);
-        return StringToUTF8Buffer(language);
+        return this.StringToUTF8Buffer(language);
     },
 
     GetDeviceInfoExtern: function () {
         const deviceType = ysdk.deviceInfo.type;
         console.log('[YaGamesLib] Device type:', deviceType);
-        return StringToUTF8Buffer(deviceType);
+        return this.StringToUTF8Buffer(deviceType);
     },
 
     CheckCanReviewExtern: function () {
@@ -255,7 +255,7 @@ mergeInto(LibraryManager.library, {
         });
 
         console.log('[YaGamesLib] Player info:', json);
-        return StringToUTF8Buffer(json);
+        return this.StringToUTF8Buffer(json);
     },
 
 });
