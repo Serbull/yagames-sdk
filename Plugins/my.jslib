@@ -100,13 +100,13 @@ mergeInto(LibraryManager.library, {
     GetLanguageExtern: function () {
         const language = ysdk.environment.i18n.lang;
         console.log('[YaGamesLib] Language:', language);
-        return StringToUTF8(language);
+        return this.StringToUTF8(language);
     },
 
     GetDeviceInfoExtern: function () {
         const deviceType = ysdk.deviceInfo.type;
         console.log('[YaGamesLib] Device type:', deviceType);
-        return StringToUTF8(deviceType);
+        return this.StringToUTF8(deviceType);
     },
 
     CheckCanReviewExtern: function () {
@@ -253,8 +253,8 @@ mergeInto(LibraryManager.library, {
             id: id
         });
 
-        console.log('[YaGamesLib] Player Info:', json);
-        return stringToUTF8(json);
+        console.log('[YaGamesLib] Player info:', json);
+        return this.StringToUTF8(json);
     },
 
 });
