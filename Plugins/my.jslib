@@ -1,7 +1,6 @@
-
 mergeInto(LibraryManager.library, {
 
-    StringToUTF8Buffer: function (str) {
+    StringToUTF8: function (str) {
         var bufferSize = lengthBytesUTF8(str) + 1;
         var buffer = _malloc(bufferSize);
         stringToUTF8(str, buffer, bufferSize);
@@ -99,15 +98,20 @@ mergeInto(LibraryManager.library, {
     },
 
     GetLanguageExtern: function () {
-        const language = ysdk.environment.i18n.lang;
-        console.log('[YaGamesLib] Language:', language);
-        return this.StringToUTF8Buffer(language);
+        var lang = ysdk.environment.i18n.lang;
+        var bufferSize = lengthBytesUTF8(lang) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(lang, buffer, bufferSize);
+        return buffer;
     },
 
     GetDeviceInfoExtern: function () {
-        const deviceType = ysdk.deviceInfo.type;
-        console.log('[YaGamesLib] Device type:', deviceType);
-        return this.StringToUTF8Buffer(deviceType);
+        console.log('[YaGamesLib] Device type:', ysdk.deviceInfo.type);
+        var data = ysdk.deviceInfo.type;
+        var bufferSize = lengthBytesUTF8(data) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(data, buffer, bufferSize);
+        return buffer;
     },
 
     CheckCanReviewExtern: function () {
@@ -255,7 +259,11 @@ mergeInto(LibraryManager.library, {
         });
 
         console.log('[YaGamesLib] Player info:', json);
-        return this.StringToUTF8Buffer(json);
+
+        var bufferSize = lengthBytesUTF8(json) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(json, buffer, bufferSize);
+        return buffer;
     },
 
 });
