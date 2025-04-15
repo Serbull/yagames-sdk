@@ -1,5 +1,12 @@
 mergeInto(LibraryManager.library, {
 
+    StringToUTF8: function (str) {
+        var bufferSize = lengthBytesUTF8(str) + 1;
+        var buffer = _malloc(bufferSize);
+        stringToUTF8(str, buffer, bufferSize);
+        return buffer;
+    },
+
     SendGameReadyExtern: function () {
         console.log('[YaGamesLib] Game Ready');
         ysdk.features.LoadingAPI.ready();
@@ -91,20 +98,15 @@ mergeInto(LibraryManager.library, {
     },
 
     GetLanguageExtern: function () {
-        var lang = ysdk.environment.i18n.lang;
-        var bufferSize = lengthBytesUTF8(lang) + 1;
-        var buffer = _malloc(bufferSize);
-        stringToUTF8(lang, buffer, bufferSize);
-        return buffer;
+        const language = ysdk.environment.i18n.lang;
+        console.log('[YaGamesLib] Language:', language);
+        return StringToUTF8(language);
     },
 
     GetDeviceInfoExtern: function () {
-        console.log('[YaGamesLib] Device type:', ysdk.deviceInfo.type);
-        var data = ysdk.deviceInfo.type;
-        var bufferSize = lengthBytesUTF8(data) + 1;
-        var buffer = _malloc(bufferSize);
-        stringToUTF8(data, buffer, bufferSize);
-        return buffer;
+        const deviceType = ysdk.deviceInfo.type;
+        console.log('[YaGamesLib] Device type:', deviceType);
+        return StringToUTF8(deviceType);
     },
 
     CheckCanReviewExtern: function () {
@@ -245,11 +247,14 @@ mergeInto(LibraryManager.library, {
     GetPlayerInfoExtern: function () {
         const name = player ? player.getName() : null;
         const id = player ? player.getUniqueID() : null;
+
         const json = JSON.stringify({
             name: name,
             id: id
         });
-        console.log(json);
-        return json;
+
+        console.log('[YaGamesLib] Player Info:', json);
+        return stringToUTF8(json);
     },
+
 });
