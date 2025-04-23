@@ -17,15 +17,13 @@ namespace YaGamesSDK.Components
         [SerializeField] private UnityEvent _onPurchaseSuccessful;
         [SerializeField] private UnityEvent _onPurchaseFailed;
 
-        private Purchasing.Product _product;
+        private Purchasing.Product Product => Core.YaGamesSettings.Instance.Products.FirstOrDefault((product) => product.Id == _productId);
 
         public string ProductId => _productId;
 
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(Purchase);
-
-            _product = Core.YaGamesSettings.Instance.Products.FirstOrDefault((product) => product.Id == _productId);
 
             if (_priceText != null)
             {
@@ -65,7 +63,7 @@ namespace YaGamesSDK.Components
 
         private void CheckConsumableProduct(bool callbackPurchase)
         {
-            if (_product.Type == Purchasing.ProductType.Consumable && IsBought())
+            if (Product.Type == Purchasing.ProductType.Consumable && IsBought())
             {
                 if (callbackPurchase)
                 {
@@ -80,7 +78,7 @@ namespace YaGamesSDK.Components
 
         private void Purchase()
         {
-            if (_product.Type == Purchasing.ProductType.NonConsumable && IsBought())
+            if (Product.Type == Purchasing.ProductType.NonConsumable && IsBought())
             {
                 YaGames.LogError($"Product '{_productId}' already bought");
                 return;
@@ -108,7 +106,7 @@ namespace YaGamesSDK.Components
 
         public void ConsumePurchase()
         {
-            if (_product.Type == Purchasing.ProductType.Consumable)
+            if (Product.Type == Purchasing.ProductType.Consumable)
             {
                 Purchasing.ConsumePurchase(_productId);
             }
