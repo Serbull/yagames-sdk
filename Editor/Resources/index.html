@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -19,7 +20,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
     </style>
 
@@ -44,25 +45,23 @@
         var products;
         var lb;
 
-        YaGames
-            .init()
-            .then(ysdk => {
-                console.log('[Index] Yandex SDK initialized');
-                window.ysdk = ysdk;
+        YaGames.init().then(async ysdk => {
+            console.log('[Index] Yandex SDK initialized');
+            window.ysdk = ysdk;
 
-                //Don`t rename this line. It used by Scriptable Config. 
-                ysdk.adv.showFullscreenAdv();
+            //Don`t rename this line. It`s using by Scriptable Config. 
+            ysdk.adv.showFullscreenAdv();
 
-                try {
-                    await initPlayer();
-                    await initPayments();
-                    await initLeaderboard();
-                    console.log('[Index] All data ready. Now loading Unity');
-                    initUnityGame();
-                } catch (e) {
-                    console.error('[Index] Init error:', e);
-                }
-            });
+            try {
+                await initPlayer();
+                await initPayments();
+                await initLeaderboard();
+                console.log('[Index] All data ready. Now loading Unity');
+                initUnityGame();
+            } catch (e) {
+                console.error('[Index] Init error:', e);
+            }
+        });
 
         function initPlayer() {
             ysdk.getPlayer({ scopes: false }).then(_player => {
@@ -175,4 +174,5 @@
 
         loadingBar.style.display = "block";</script>
 </body>
+
 </html>
