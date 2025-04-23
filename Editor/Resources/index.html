@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="CustomTemplateData/style.css">
 
     <!-- Yandex Games SDK -->
@@ -46,7 +45,7 @@
         var lb;
 
         YaGames.init().then(async ysdk => {
-            console.log('[Index] Yandex SDK initialized');
+            console.log('[Index] Yandex SDK initialized.');
             window.ysdk = ysdk;
 
             //Don`t rename this line. It`s using by Scriptable Config. 
@@ -56,7 +55,6 @@
                 await initPlayer();
                 await initPayments();
                 await initLeaderboard();
-                console.log('[Index] All data ready. Now loading Unity');
                 initUnityGame();
             } catch (e) {
                 console.error('[Index] Init error:', e);
@@ -65,7 +63,7 @@
 
         function initPlayer() {
             return ysdk.getPlayer({ scopes: false }).then(_player => {
-                console.log('[Index] Player initialized');
+                console.log('[Index] Player initialized.');
                 player = _player;
             }).catch(err => {
                 console.log('[Index] Player not initialized: ', err);
@@ -74,19 +72,22 @@
 
         function initPayments() {
             return ysdk.getPayments({ signed: true }).then(_payments => {
-                console.log('[Index] Payments available');
+                console.log('[Index] Payments initialized.');
                 payments = _payments;
                 return payments.getCatalog().then(_products => {
-                    console.log('[Index] Products loaded');
+                    console.log('[Index] Products initialized.');
                     products = _products;
                 });
             }).catch(err => {
-                console.log('[Index] Payments not available');
+                console.log('[Index] Payments not initialized: ', err);
             })
         }
 
         function initLeaderboard() {
-            return ysdk.getLeaderboards().then(_lb => lb = _lb);
+            return ysdk.getLeaderboards().then(_lb => {
+                console.log('[Index] Leaderboard initialized.');
+                lb = _lb;
+            })
         }
 
         function initUnityGame() {
