@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 namespace YaGamesSDK.Components
 {
@@ -11,11 +12,17 @@ namespace YaGamesSDK.Components
             NonConsumable
         }
 
-        [SerializeField] private string _productId;
-        [SerializeField] private Type _type;
+        [Serializable]
+        public class Product
+        {
+            public string ProductId;
+            public Type Type;
+        }
+
+        [SerializeField] private Product[] _listenProducts;
         [Space]
-        [SerializeField] private UnityEvent _onPurchaseSuccessful;
-        [SerializeField] private UnityEvent _onPurchaseFailed;
+        [SerializeField] private UnityEvent<string> _onPurchaseSuccessful;
+        [SerializeField] private UnityEvent<string> _onPurchaseFailed;
 
         private void OnEnable()
         {
@@ -29,62 +36,62 @@ namespace YaGamesSDK.Components
             Purchasing.OnPurchaseFailed -= Purchasing_OnPurchaseFailed;
         }
 
-        public void AddListener(UnityAction<bool> onPurchaseCompleted)
+        public void AddListener(UnityAction<string, bool> onPurchaseCompleted)
         {
-            _onPurchaseSuccessful.AddListener(() => onPurchaseCompleted(true));
-            _onPurchaseFailed.AddListener(() => onPurchaseCompleted(false));
+            _onPurchaseSuccessful.AddListener((string productId) => onPurchaseCompleted(productId, true));
+            _onPurchaseFailed.AddListener((string productId) => onPurchaseCompleted(productId, false));
             CheckConsumableProduct(true);
         }
 
-        public void RemoveListener(UnityAction<bool> onPurchaseCompleted)
+        public void RemoveListener(UnityAction<string, bool> onPurchaseCompleted)
         {
-            _onPurchaseSuccessful.RemoveListener(() => onPurchaseCompleted(true));
-            _onPurchaseFailed.RemoveListener(() => onPurchaseCompleted(false));
+            _onPurchaseSuccessful.RemoveListener((string productId) => onPurchaseCompleted(productId, true));
+            _onPurchaseFailed.RemoveListener((string productId) => onPurchaseCompleted(productId, true));
         }
 
         private void CheckConsumableProduct(bool callbackPurchase)
         {
-            if (_type == Type.Consumable && IsBought())
+            if (_listenProducts == null) return;
+
+            foreach (var product in _listenProducts)
             {
-                if (callbackPurchase)
+                if (product.Type == Type.Consumable && Purchasing.IsBought(product.ProductId))
                 {
-                    Purchasing_OnPurchaseSuccessful(_productId);
-                }
-                else
-                {
-                    YaGames.LogError($"Use Consume for product: {_productId}");
+                    if (callbackPurchase)
+                    {
+                        Purchasing_OnPurchaseSuccessful(product.ProductId);
+                    }
+                    else
+                    {
+                        YaGames.LogError($"Use Consume for product: {product.ProductId}");
+                    }
                 }
             }
         }
 
         private void Purchasing_OnPurchaseSuccessful(string productId)
         {
-            if (productId == _productId)
+            foreach (var product in _listenProducts)
             {
-                _onPurchaseSuccessful?.Invoke();
-                CheckConsumableProduct(false);
+                if (product.ProductId == productId)
+                {
+                    _onPurchaseSuccessful?.Invoke(productId);
+                    CheckConsumableProduct(false);
+                    break;
+                }
             }
         }
 
         private void Purchasing_OnPurchaseFailed(string productId)
         {
-            if (productId == _productId)
+            foreach (var product in _listenProducts)
             {
-                _onPurchaseFailed?.Invoke();
+                if (product.ProductId == productId)
+                {
+                    _onPurchaseFailed?.Invoke(productId);
+                    break;
+                }
             }
-        }
-
-        public void ConsumePurchase()
-        {
-            if (_type == Type.Consumable)
-            {
-                Purchasing.ConsumePurchase(_productId);
-            }
-        }
-
-        public bool IsBought()
-        {
-            return Purchasing.IsBought(_productId);
         }
     }
 }
