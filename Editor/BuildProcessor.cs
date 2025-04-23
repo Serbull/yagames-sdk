@@ -79,8 +79,9 @@ namespace YaGamesSDK.Editor
 
             string fileContent = File.ReadAllText(targetIndexPath);
 
-            //Replace name with product name
-            fileContent = fileContent.Replace("nameplaceholder", Application.productName);
+            //Replace name with folder name
+            string folderName = Path.GetFileName(Path.GetDirectoryName(buildPath));
+            fileContent = fileContent.Replace("nameplaceholder", folderName);
 
             //Replace IS showing on starting
             if (!settings.ShowInterstitialOnGameStart)
