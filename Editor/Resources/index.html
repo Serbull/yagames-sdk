@@ -47,16 +47,21 @@
         YaGames
             .init()
             .then(ysdk => {
-                console.log('Yandex SDK initialized');
+                console.log('[Index] Yandex SDK initialized');
                 window.ysdk = ysdk;
 
-                initPlayer();
-                initPayments();
-                initLeaderboard();
-
+                //Don`t rename this line. It used by Scriptable Config. 
                 ysdk.adv.showFullscreenAdv();
 
-                initUnityGame();
+                try {
+                    await initPlayer();
+                    await initPayments();
+                    await initLeaderboard();
+                    console.log('[Index] All data ready. Now loading Unity');
+                    initUnityGame();
+                } catch (e) {
+                    console.error('[Index] Init error:', e);
+                }
             });
 
         function initPlayer() {
@@ -65,7 +70,6 @@
                 player = _player;
             }).catch(err => {
                 console.log('Player not initialized: ', err);
-                // Ошибка при инициализации объекта Player.
             });
         }
 

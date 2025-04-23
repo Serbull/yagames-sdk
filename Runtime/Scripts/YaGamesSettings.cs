@@ -32,6 +32,8 @@ namespace YaGamesSDK.Core
         [Header("Other")]
         public int BuildVersion;
         public bool ReplaceIndexHtml = true;
+        [ShowIf(nameof(ReplaceIndexHtml))]
+        public bool ShowInterstitialOnGameStart = true;
         public bool ArchiveBuild = true;
     }
 }

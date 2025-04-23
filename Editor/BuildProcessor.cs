@@ -44,7 +44,7 @@ namespace YaGamesSDK.Editor
 
                 if (settings.ReplaceIndexHtml)
                 {
-                    ReplaceIndexHtml(report.summary.outputPath, Application.productName);
+                    ReplaceIndexHtml(settings, report.summary.outputPath);
                 }
 
                 if (settings.ArchiveBuild)
@@ -54,7 +54,7 @@ namespace YaGamesSDK.Editor
             }
         }
 
-        private void ReplaceIndexHtml(string buildPath, string productName)
+        private void ReplaceIndexHtml(YaGamesSettings settings, string buildPath)
         {
             string targetIndexPath = Path.Combine(buildPath, "index.html");
             var indexFile = AssetDatabase.LoadAssetAtPath<TextAsset>("Packages/com.serbull.yagames-sdk/Editor/Resources/index.html");
@@ -78,7 +78,17 @@ namespace YaGamesSDK.Editor
             File.Copy(customIndexPath, targetIndexPath, true);
 
             string fileContent = File.ReadAllText(targetIndexPath);
-            fileContent = fileContent.Replace("nameplaceholder", productName);
+
+            //Replace name with product name
+            fileContent = fileContent.Replace("nameplaceholder", Application.productName);
+
+            //Replace IS showing on starting
+            if (!settings.ShowInterstitialOnGameStart)
+            {
+                string line = "ysdk.adv.showFullscreenAdv();";
+                fileContent = fileContent.Replace(line, $"//{line}");
+            }
+
             File.WriteAllText(targetIndexPath, fileContent);
 
             YaGames.Log("Custom index.html successfully copied to build folder.");
