@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace YaGamesSDK.Core
+namespace YaGamesSDK
 {
     public class ShowIfAttribute : PropertyAttribute
     {

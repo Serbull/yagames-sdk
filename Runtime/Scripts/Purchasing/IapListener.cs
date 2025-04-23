@@ -1,25 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
-using System;
+using System.Linq;
 
 namespace YaGamesSDK.Components
 {
-    public class IapListener : MonoBehaviour
+    public class IAPListener : MonoBehaviour
     {
-        public enum Type
-        {
-            Consumable,
-            NonConsumable
-        }
-
-        [Serializable]
-        public class Product
-        {
-            public string ProductId;
-            public Type Type;
-        }
-
-        [SerializeField] private Product[] _listenProducts;
+        [SerializeField, InAppId] private string[] _listenProducts;
         [Space]
         [SerializeField] private UnityEvent<string> _onPurchaseSuccessful;
         [SerializeField] private UnityEvent<string> _onPurchaseFailed;
@@ -53,17 +40,18 @@ namespace YaGamesSDK.Components
         {
             if (_listenProducts == null) return;
 
-            foreach (var product in _listenProducts)
+            foreach (var productId in _listenProducts)
             {
-                if (product.Type == Type.Consumable && Purchasing.IsBought(product.ProductId))
+                var product = GetProduct(productId);
+                if (product.Type == Purchasing.ProductType.Consumable && Purchasing.IsBought(product.Id))
                 {
                     if (callbackPurchase)
                     {
-                        Purchasing_OnPurchaseSuccessful(product.ProductId);
+                        Purchasing_OnPurchaseSuccessful(product.Id);
                     }
                     else
                     {
-                        YaGames.LogError($"Use Consume for product: {product.ProductId}");
+                        YaGames.LogError($"Use Consume for product: {product.Id}");
                     }
                 }
             }
@@ -73,7 +61,7 @@ namespace YaGamesSDK.Components
         {
             foreach (var product in _listenProducts)
             {
-                if (product.ProductId == productId)
+                if (product == productId)
                 {
                     _onPurchaseSuccessful?.Invoke(productId);
                     CheckConsumableProduct(false);
@@ -86,12 +74,17 @@ namespace YaGamesSDK.Components
         {
             foreach (var product in _listenProducts)
             {
-                if (product.ProductId == productId)
+                if (product == productId)
                 {
                     _onPurchaseFailed?.Invoke(productId);
                     break;
                 }
             }
+        }
+
+        private Purchasing.Product GetProduct(string id)
+        {
+            return Core.YaGamesSettings.Instance.Products.FirstOrDefault((product) => product.Id == id);
         }
     }
 }

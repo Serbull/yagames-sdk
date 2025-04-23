@@ -6,6 +6,19 @@ namespace YaGamesSDK
 {
     public class Purchasing
     {
+        public enum ProductType
+        {
+            Consumable,
+            NonConsumable
+        }
+
+        [Serializable]
+        public class Product
+        {
+            public string Id;
+            public ProductType Type;
+        }
+
         #region INTERNAL
 
         [DllImport("__Internal")]

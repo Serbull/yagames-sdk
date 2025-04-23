@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
-using YaGamesSDK.Core;
 
 namespace YaGamesSDK.Editor
 {

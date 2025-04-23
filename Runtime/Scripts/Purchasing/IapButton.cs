@@ -2,20 +2,14 @@ using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 namespace YaGamesSDK.Components
 {
     [RequireComponent(typeof(Button))]
-    public class IapButton : MonoBehaviour
+    public class IAPButton : MonoBehaviour
     {
-        public enum Type
-        {
-            Consumable,
-            NonConsumable
-        }
-
-        [SerializeField] private string _productId;
-        [SerializeField] private Type _type;
+        [SerializeField, InAppId] private string _productId;
         [Space]
         [SerializeField] private TextMeshProUGUI _priceText;
         [SerializeField] private WebImage _currencyImage;
@@ -23,11 +17,15 @@ namespace YaGamesSDK.Components
         [SerializeField] private UnityEvent _onPurchaseSuccessful;
         [SerializeField] private UnityEvent _onPurchaseFailed;
 
+        private Purchasing.Product _product;
+
         public string ProductId => _productId;
 
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(Purchase);
+
+            _product = Core.YaGamesSettings.Instance.Products.FirstOrDefault((product) => product.Id == _productId);
 
             if (_priceText != null)
             {
@@ -67,7 +65,7 @@ namespace YaGamesSDK.Components
 
         private void CheckConsumableProduct(bool callbackPurchase)
         {
-            if (_type == Type.Consumable && IsBought())
+            if (_product.Type == Purchasing.ProductType.Consumable && IsBought())
             {
                 if (callbackPurchase)
                 {
@@ -82,7 +80,7 @@ namespace YaGamesSDK.Components
 
         private void Purchase()
         {
-            if (_type == Type.NonConsumable && IsBought())
+            if (_product.Type == Purchasing.ProductType.NonConsumable && IsBought())
             {
                 YaGames.LogError($"Product '{_productId}' already bought");
                 return;
@@ -110,7 +108,7 @@ namespace YaGamesSDK.Components
 
         public void ConsumePurchase()
         {
-            if (_type == Type.Consumable)
+            if (_product.Type == Purchasing.ProductType.Consumable)
             {
                 Purchasing.ConsumePurchase(_productId);
             }

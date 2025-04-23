@@ -26,6 +26,9 @@ namespace YaGamesSDK.Core
         [ShowIf(nameof(ShowInterstitialOnRepeat))]
         public string InterstitialRepeatFlag = "interstitialInterval";
 
+        [Header("Purchasing")]
+        public Purchasing.Product[] Products;
+
         [Header("Localization")]
         public string EditorDefaultLanguage = "en";
 
