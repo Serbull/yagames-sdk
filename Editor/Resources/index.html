@@ -64,29 +64,29 @@
         });
 
         function initPlayer() {
-            ysdk.getPlayer({ scopes: false }).then(_player => {
-                console.log('Player initialized');
+            return ysdk.getPlayer({ scopes: false }).then(_player => {
+                console.log('[Index] Player initialized');
                 player = _player;
             }).catch(err => {
-                console.log('Player not initialized: ', err);
+                console.log('[Index] Player not initialized: ', err);
             });
         }
 
         function initPayments() {
-            ysdk.getPayments({ signed: true }).then(_payments => {
-                console.log('Payments available');
+            return ysdk.getPayments({ signed: true }).then(_payments => {
+                console.log('[Index] Payments available');
                 payments = _payments;
-                payments.getCatalog().then(_products => {
-                    console.log('Products loaded');
+                return payments.getCatalog().then(_products => {
+                    console.log('[Index] Products loaded');
                     products = _products;
                 });
             }).catch(err => {
-                console.log('Payments not available');
+                console.log('[Index] Payments not available');
             })
         }
 
         function initLeaderboard() {
-            ysdk.getLeaderboards().then(_lb => lb = _lb);
+            return ysdk.getLeaderboards().then(_lb => lb = _lb);
         }
 
         function initUnityGame() {
