@@ -80,7 +80,7 @@ namespace YaGamesSDK.Editor
             string fileContent = File.ReadAllText(targetIndexPath);
 
             //Replace name with folder name
-            string folderName = Path.GetFileName(Path.GetDirectoryName(buildPath));
+            string folderName = Path.GetFileName(buildPath);
             fileContent = fileContent.Replace("nameplaceholder", folderName);
 
             //Replace IS showing on starting
