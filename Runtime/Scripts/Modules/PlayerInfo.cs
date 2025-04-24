@@ -7,21 +7,24 @@ namespace YaGamesSDK
 {
     public class PlayerInfo
     {
+        public enum AvatarSize { Small, Medium, Large }
+
         [DllImport("__Internal")]
-        private static extern string GetPlayerInfoExtern();
+        private static extern string GetPlayerInfoExtern(string avatarSize);
 
         public struct PlayerData
         {
             public string name;
             public string id;
+            public string avatarUrl;
         }
 
-        public static PlayerData GetPlayerData()
+        public static PlayerData GetPlayerData(AvatarSize avatarSize = AvatarSize.Medium)
         {
 #if UNITY_EDITOR
             return new PlayerData();
 #else
-            var json = GetPlayerInfoExtern();
+            var json = GetPlayerInfoExtern(avatarSize.ToString().ToLower());
             return JsonConvert.DeserializeObject<PlayerData>(json);
 #endif
         }

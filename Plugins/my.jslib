@@ -249,13 +249,15 @@ mergeInto(LibraryManager.library, {
         });
     },
 
-    GetPlayerInfoExtern: function () {
+    GetPlayerInfoExtern: function (avatarSize) {
         const name = player ? player.getName() : null;
         const id = player ? player.getUniqueID() : null;
+        const avatarUrl = player ? player.getPhoto(avatarSize) : null;
 
         const json = JSON.stringify({
             name: name,
-            id: id
+            id: id,
+            avatarUrl: avatarUrl
         });
 
         console.log('[YaGamesLib] Player info:', json);

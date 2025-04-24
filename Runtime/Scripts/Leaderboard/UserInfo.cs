@@ -6,7 +6,7 @@ using TMPro;
 
 namespace YaGamesSDK
 {
-    public class UserInfo : MonoBehaviour
+    internal class UserInfo : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _placeText;
         [SerializeField] private Image _icon;
