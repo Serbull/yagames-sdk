@@ -16,8 +16,6 @@ public class YaGames : MonoBehaviour
 
     [Header("CloudSaves")]
     [SerializeField] private bool _loadCloudSavesOnStart = false;
-    [Header("Purchases")]
-    [SerializeField] private bool _restorePurchasesOnStart = false;
     [Space]
     [SerializeField] private bool _sendGameReadyOnStart = true;
 
@@ -48,11 +46,6 @@ public class YaGames : MonoBehaviour
             CloudSaves.LoadGame();
         }
 
-        if (_restorePurchasesOnStart)
-        {
-            Purchasing.RestorePurchases();
-        }
-
         if (_sendGameReadyOnStart)
         {
             SendGameReady();
@@ -62,6 +55,7 @@ public class YaGames : MonoBehaviour
         CheckCanReviewExtern();
 #endif
         Flags.Load();
+        Purchasing.Initialize();
 
         if (YaGamesSettings.Instance.ShowInterstitialOnRepeat)
         {

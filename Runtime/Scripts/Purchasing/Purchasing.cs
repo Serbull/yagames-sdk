@@ -44,7 +44,7 @@ namespace YaGamesSDK
 
         private static readonly List<string> _purchasedProducts = new();
 
-        public static bool IsPurchasesRestored { get; private set; }
+        public static bool IsInitialized { get; private set; }
         public static string[] PurchasedProducts => _purchasedProducts.ToArray();
 
         public static string GetProductPrice(string productId)
@@ -65,9 +65,9 @@ namespace YaGamesSDK
 #endif
         }
 
-        public static void RestorePurchases()
+        public static void Initialize()
         {
-            if (IsPurchasesRestored) return;
+            if (IsInitialized) return;
 
 #if !UNITY_EDITOR
             RestorePurchasesExtern();
@@ -116,8 +116,8 @@ namespace YaGamesSDK
 
         public void AllProductsRestored()
         {
-            YaGames.Log("All products restored");
-            IsPurchasesRestored = true;
+            YaGames.Log("Purchasing initialized");
+            IsInitialized = true;
             OnPurchasesRestored?.Invoke();
         }
 
