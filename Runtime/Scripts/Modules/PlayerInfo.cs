@@ -10,7 +10,7 @@ namespace YaGamesSDK
         public enum AvatarSize { Small, Medium, Large }
 
         [DllImport("__Internal")]
-        private static extern string GetPlayerInfoExtern(string avatarSize);
+        private static extern string GetPlayerInfoExtern();
 
         public struct PlayerData
         {
