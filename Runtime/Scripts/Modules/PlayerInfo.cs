@@ -19,12 +19,14 @@ namespace YaGamesSDK
             public string avatarUrl;
         }
 
-        public static PlayerData GetPlayerData(AvatarSize avatarSize = AvatarSize.Medium)
+        //public static PlayerData GetPlayerData(AvatarSize avatarSize = AvatarSize.Medium)
+        public static PlayerData GetPlayerData()
         {
 #if UNITY_EDITOR
             return new PlayerData();
 #else
-            var json = GetPlayerInfoExtern(avatarSize.ToString().ToLower());
+            //var json = GetPlayerInfoExtern(avatarSize.ToString().ToLower());
+            var json = GetPlayerInfoExtern("medium");
             return JsonConvert.DeserializeObject<PlayerData>(json);
 #endif
         }
