@@ -249,10 +249,10 @@ mergeInto(LibraryManager.library, {
         });
     },
 
-    GetPlayerInfoExtern: function (avatarSize) {
+    GetPlayerInfoExtern: function () {
         const name = player ? player.getName() : null;
         const id = player ? player.getUniqueID() : null;
-        const avatarUrl = player ? player.getPhoto(avatarSize) : null;
+        const avatarUrl = player ? player.getPhoto('medium') : null;
 
         const json = JSON.stringify({
             name: name,

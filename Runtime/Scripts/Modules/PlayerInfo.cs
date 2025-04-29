@@ -26,7 +26,7 @@ namespace YaGamesSDK
             return new PlayerData();
 #else
             //var json = GetPlayerInfoExtern(avatarSize.ToString().ToLower());
-            var json = GetPlayerInfoExtern("medium");
+            var json = GetPlayerInfoExtern();
             return JsonConvert.DeserializeObject<PlayerData>(json);
 #endif
         }
