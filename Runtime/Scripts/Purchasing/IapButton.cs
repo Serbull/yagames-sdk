@@ -19,7 +19,29 @@ namespace YaGamesSDK.Components
 
         private Purchasing.Product Product => Core.YaGamesSettings.Instance.Products.FirstOrDefault((product) => product.Id == _productId);
 
-        public string ProductId => _productId;
+        public string ProductId
+        {
+            get
+            {
+                return _productId;
+            }
+            set
+            {
+                _productId = value;
+
+                if (_priceText != null)
+                {
+                    _priceText.text = Purchasing.GetProductPrice(_productId);
+                }
+
+                if (_currencyImage != null && !_currencyImage.IsLoaded)
+                {
+                    _currencyImage.LoadImageFromURL(Purchasing.GetCurrencyImage(_productId));
+                }
+
+                CheckConsumableProduct(true);
+            }
+        }
 
         private void Awake()
         {
