@@ -17,7 +17,19 @@ namespace YaGamesSDK.Components
         [SerializeField] private UnityEvent _onPurchaseSuccessful;
         [SerializeField] private UnityEvent _onPurchaseFailed;
 
-        private Purchasing.Product Product => Core.YaGamesSettings.Instance.Products.FirstOrDefault((product) => product.Id == _productId);
+        private Purchasing.Product Product
+        {
+            get
+            {
+                var result = Core.YaGamesSettings.Instance.Products.FirstOrDefault((product) => product.Id == _productId);
+                if (result == null)
+                {
+                    YaGames.LogError($"Not exist product with id: '{_productId}'");
+                }
+
+                return result;
+            }
+        }
 
         public string ProductId
         {
@@ -85,6 +97,8 @@ namespace YaGamesSDK.Components
 
         private void CheckConsumableProduct(bool callbackPurchase)
         {
+            if (Product == null) return;
+
             if (Product.Type == Purchasing.ProductType.Consumable && IsBought())
             {
                 if (callbackPurchase)
@@ -100,6 +114,8 @@ namespace YaGamesSDK.Components
 
         private void Purchase()
         {
+            if (Product == null) return;
+
             if (Product.Type == Purchasing.ProductType.NonConsumable && IsBought())
             {
                 YaGames.LogError($"Product '{_productId}' already bought");
@@ -128,6 +144,8 @@ namespace YaGamesSDK.Components
 
         public void ConsumePurchase()
         {
+            if (Product == null) return;
+
             if (Product.Type == Purchasing.ProductType.Consumable)
             {
                 Purchasing.ConsumePurchase(_productId);
