@@ -40,6 +40,8 @@ namespace YaGamesSDK.Components
 
         public void LoadImageFromURL(string url)
         {
+            if (!gameObject.activeInHierarchy) return;
+
             if (_targetImage == null)
             {
                 Initiliaze();
