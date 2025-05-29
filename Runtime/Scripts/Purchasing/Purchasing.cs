@@ -52,6 +52,7 @@ namespace YaGamesSDK
 #if UNITY_EDITOR
             return "-";
 #else
+            BaseProductToAB(ref productId);
             return GetProductPriceExtern(productId);
 #endif
         }
@@ -61,6 +62,7 @@ namespace YaGamesSDK
 #if UNITY_EDITOR
             return "https://yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png";
 #else
+            BaseProductToAB(ref productId);
             return GetCurrencyImageExtern(productId);
 #endif
         }
@@ -79,6 +81,7 @@ namespace YaGamesSDK
 #if UNITY_EDITOR
             new Purchasing().PurchaseSuccessful(productId);
 #else
+            BaseProductToAB(ref productId);
             PurchaseExtern(productId);
 #endif
         }
@@ -90,6 +93,7 @@ namespace YaGamesSDK
                 _purchasedProducts.Remove(productId);
 
 #if !UNITY_EDITOR
+                BaseProductToAB(ref productId);
                 ConsumePurchaseExtern(productId);
 #endif
             }
@@ -97,6 +101,7 @@ namespace YaGamesSDK
 
         public void PurchaseSuccessful(string productId)
         {
+            ABToBaseProduct(ref productId);
             YaGames.Log("Purchase successful: " + productId);
             _purchasedProducts.Add(productId);
             OnPurchaseSuccessful?.Invoke(productId);
@@ -104,12 +109,14 @@ namespace YaGamesSDK
 
         public void PurchaseFailed(string productId)
         {
+            ABToBaseProduct(ref productId);
             YaGames.Log("Purchase failed: " + productId);
             OnPurchaseFailed?.Invoke(productId);
         }
 
         public void PurchaseRestored(string productId)
         {
+            ABToBaseProduct(ref productId);
             YaGames.Log("Product restored: " + productId);
             _purchasedProducts.Add(productId);
         }
@@ -132,6 +139,16 @@ namespace YaGamesSDK
             }
 
             return false;
+        }
+
+        private static void BaseProductToAB(ref string productId)
+        {
+            productId += Flags.GetFlag("inAppProducts", "");
+        }
+
+        private static void ABToBaseProduct(ref string productId)
+        {
+            productId = productId.Replace(Flags.GetFlag("inAppProducts", ""), "");
         }
     }
 }
