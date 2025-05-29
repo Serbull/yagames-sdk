@@ -143,17 +143,17 @@ namespace YaGamesSDK
 
         private static void BaseProductToAB(ref string productId)
         {
-            var suffix = Flags.GetFlag("inAppProducts", "-");
-            if (!string.IsNullOrEmpty(suffix) && suffix != "-")
+            var flag = Flags.GetFlag(Core.YaGamesSettings.Instance.ProductsFlagTitle, "");
+            if (flag == Core.YaGamesSettings.Instance.ProductsFlagValue)
             {
-                productId += suffix;
+                productId += flag;
             }
         }
 
         private static void ABToBaseProduct(ref string productId)
         {
-            var suffix = Flags.GetFlag("inAppProducts", "-");
-            if (!string.IsNullOrEmpty(suffix) && suffix != "-" && productId.EndsWith(suffix))
+            var suffix = Core.YaGamesSettings.Instance.ProductsFlagValue;
+            if (productId.EndsWith(suffix))
             {
                 productId = productId[..^suffix.Length];
             }

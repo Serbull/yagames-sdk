@@ -28,6 +28,8 @@ namespace YaGamesSDK.Core
 
         [Header("Purchasing")]
         public Purchasing.Product[] Products;
+        public string ProductsFlagTitle = "inAppProducts";
+        public string ProductsFlagValue = "_ab";
 
         [Header("Localization")]
         public string EditorDefaultLanguage = "en";
